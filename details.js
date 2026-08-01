@@ -350,15 +350,22 @@ socialLinks.forEach(item => {
 
     if (!btn) return;
 
-    if (item.url && item.url.trim() !== "") {
+    const url = (item.url || "").trim();
 
-        btn.href = item.url;
+    if (
+        url &&
+        url !== "#" &&
+        url.toLowerCase() !== "n/a"
+    ) {
+
+        btn.href = url;
         btn.target = "_blank";
+        btn.rel = "noopener noreferrer";
         btn.style.display = "inline-block";
 
     } else {
 
-        // Hide button if no link exists
+        // Hide button if no valid link exists
         btn.style.display = "none";
 
     }

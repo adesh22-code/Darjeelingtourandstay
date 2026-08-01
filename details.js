@@ -338,6 +338,39 @@ function setupButtons(){
     document.getElementById("youtubeBtn").href =
     homestay.youtube || "#";
 
+   const shareBtn = document.getElementById("shareBtn");
+
+if (shareBtn) {
+
+    shareBtn.onclick = async () => {
+
+        const shareData = {
+            title: homestay.name,
+            text: `🏡 ${homestay.name}
+📍 ${homestay.location}
+₹ ${homestay.price}`,
+            url: window.location.href
+        };
+
+        if (navigator.share) {
+
+            try {
+                await navigator.share(shareData);
+            } catch (err) {
+                console.log(err);
+            }
+
+        } else {
+
+            navigator.clipboard.writeText(window.location.href);
+            alert("Link copied to clipboard.");
+
+        }
+
+    };
+
+}
+
 }
 
 /* ==========================================

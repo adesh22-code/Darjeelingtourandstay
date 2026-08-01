@@ -931,35 +931,37 @@ async function loadWithCache(){
 }
 
 /* ======================================
-   Share Button Functionality
+   Universal Share Button Functionality
 ====================================== */
 
 document.getElementById("shareBtn").addEventListener("click", async () => {
     const shareData = {
         title: document.title || "Darjeeling Homestay Directory",
-        text: "Explore amazing homestays in Darjeeling! Check out this page:",
+        text: "Check out these amazing homestays in Darjeeling!",
         url: window.location.href
     };
 
-    // Check if the browser supports native Web Share API
+    // 1. Try Native Mobile / Web Share API first
     if (navigator.share) {
         try {
             await navigator.share(shareData);
+            return;
         } catch (err) {
-            // Ignore AbortError if the user simply cancels the share dialog
             if (err.name !== "AbortError") {
-                console.error("Error sharing:", err);
+                console.log("Native share cancelled or failed:", err);
             }
+            return;
         }
-    } else {
-        // Fallback for desktop browsers that don't support navigator.share
-        try {
-            await navigator.clipboard.writeText(window.location.href);
-            showToast("Link copied to clipboard! 📋");
-        } catch (err) {
-            console.error("Failed to copy link:", err);
-            showToast("Unable to share link.");
-        }
+    }
+
+    // 2. Fallback for Desktop / Insecure Environments (HTTP)
+    // Copies link to clipboard and displays custom options
+    try {
+        await navigator.clipboard.writeText(window.location.href);
+        showToast("Link copied to clipboard! 📋");
+    } catch (err) {
+        // Ultimate fallback if clipboard permission is denied
+        prompt("Copy this link to share:", window.location.href);
     }
 });
 

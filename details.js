@@ -329,15 +329,41 @@ function setupButtons(){
 
     }
 
-    document.getElementById("facebookBtn").href =
-    homestay.facebook || "#";
+   const socialLinks = [
+    {
+        id: "facebookBtn",
+        url: homestay.facebook
+    },
+    {
+        id: "instagramBtn",
+        url: homestay.instagram
+    },
+    {
+        id: "youtubeBtn",
+        url: homestay.youtube
+    }
+];
 
-    document.getElementById("instagramBtn").href =
-    homestay.instagram || "#";
+socialLinks.forEach(item => {
 
-    document.getElementById("youtubeBtn").href =
-    homestay.youtube || "#";
+    const btn = document.getElementById(item.id);
 
+    if (!btn) return;
+
+    if (item.url && item.url.trim() !== "") {
+
+        btn.href = item.url;
+        btn.target = "_blank";
+        btn.style.display = "inline-block";
+
+    } else {
+
+        // Hide button if no link exists
+        btn.style.display = "none";
+
+    }
+
+});
    const shareBtn = document.getElementById("shareBtn");
 
 if (shareBtn) {

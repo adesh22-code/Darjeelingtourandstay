@@ -448,39 +448,3 @@ function toggleWishlist(){
 }
 
 
-/* ======================================
-   Share Button (Robust & Universal)
-====================================== */
-
-document.addEventListener("DOMContentLoaded", () => {
-    const shareBtn = document.getElementById("shareBtn");
-    
-    if (shareBtn) {
-        shareBtn.addEventListener("click", async () => {
-            const shareData = {
-                title: document.title || "Darjeeling Homestay Directory",
-                text: "Check out this amazing homestay page!",
-                url: window.location.href
-            };
-
-            // Check if native mobile sharing is available
-            if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
-                try {
-                    await navigator.share(shareData);
-                    return;
-                } catch (err) {
-                    // User cancelled the share sheet, ignore
-                    if (err.name === "AbortError") return;
-                }
-            }
-
-            // Fallback for Desktop browsers or if sharing is blocked
-            try {
-                await navigator.clipboard.writeText(window.location.href);
-                showToast("Link copied to clipboard! 📋");
-            } catch (err) {
-                prompt("Copy and share this link:", window.location.href);
-            }
-        });
-    }
-});

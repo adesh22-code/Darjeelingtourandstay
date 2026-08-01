@@ -930,30 +930,37 @@ async function loadWithCache(){
 
 }
 
-//Share
-document.getElementById("shareBtn").addEventListener("click", async () => {
+/* ======================================
+   Share Button Functionality
+====================================== */
 
+document.getElementById("shareBtn").addEventListener("click", async () => {
     const shareData = {
-        title: document.title,
-        text: "Check out this homestay!",
+        title: document.title || "Darjeeling Homestay Directory",
+        text: "Explore amazing homestays in Darjeeling! Check out this page:",
         url: window.location.href
     };
 
-    alert("Share button clicked");
-
-    if (!navigator.share) {
-        alert("Web Share API is not supported on this browser.");
-        return;
+    // Check if the browser supports native Web Share API
+    if (navigator.share) {
+        try {
+            await navigator.share(shareData);
+        } catch (err) {
+            // Ignore AbortError if the user simply cancels the share dialog
+            if (err.name !== "AbortError") {
+                console.error("Error sharing:", err);
+            }
+        }
+    } else {
+        // Fallback for desktop browsers that don't support navigator.share
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+            showToast("Link copied to clipboard! 📋");
+        } catch (err) {
+            console.error("Failed to copy link:", err);
+            showToast("Unable to share link.");
+        }
     }
-
-    try {
-        await navigator.share(shareData);
-        alert("Shared successfully");
-    } catch (e) {
-        alert("Error: " + e.message);
-        console.log(e);
-    }
-
 });
 
 /* ======================================

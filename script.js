@@ -930,61 +930,7 @@ async function loadWithCache(){
 
 }
 
-//wishlist
-document.addEventListener("DOMContentLoaded", () => {
-    const wishlistContainer = document.getElementById("wishlistContainer");
-    
-    if (wishlistContainer) {
-        loadWishlist();
-    }
-});
 
-function loadWishlist() {
-    const wishlistContainer = document.getElementById("wishlistContainer");
-    
-    // Retrieve saved wishlist array from localStorage (adjust key name if yours differs, e.g., 'wishlist')
-    const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-
-    if (savedWishlist.length === 0) {
-        wishlistContainer.innerHTML = `
-            <div class="col-12 text-center py-5">
-                <div class="card border-0 shadow-sm p-5">
-                    <h3 class="text-muted mb-3">Your wishlist is empty</h3>
-                    <p class="text-muted mb-4">Browse homestays and tap the wishlist button to save them here for your trip.</p>
-                    <a href="index.html" class="btn btn-success px-4 py-2 mx-auto" style="width: fit-content;">Explore Homestays</a>
-                </div>
-            </div>
-        `;
-        return;
-    }
-
-    // Render saved items (Assuming savedWishlist contains homestay objects or IDs)
-    // If you store full objects, you can loop and build HTML cards directly:
-    wishlistContainer.innerHTML = savedWishlist.map(homestay => `
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
-                <img src="${homestay.image || 'placeholder.jpg'}" class="card-img-top" alt="${homestay.name}" style="height: 200px; object-fit: cover;">
-                <div class="card-body d-flex flex-column">
-                    <h5 class="fw-bold">${homestay.name}</h5>
-                    <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot"></i> ${homestay.location}</p>
-                    <h6 class="text-success fw-bold mb-3">₹ ${homestay.price}</h6>
-                    <div class="mt-auto d-flex gap-2">
-                        <a href="details.html?id=${homestay.id}" class="btn btn-outline-success flex-grow-1">View Details</a>
-                        <button onclick="removeFromWishlist('${homestay.id}')" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `).join('');
-}
-
-// Helper function to remove an item from wishlist storage
-function removeFromWishlist(id) {
-    let savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-    savedWishlist = savedWishlist.filter(item => item.id !== id);
-    localStorage.setItem("wishlist", JSON.stringify(savedWishlist));
-    loadWishlist(); // Refresh grid
-}
 
 
 /* ======================================

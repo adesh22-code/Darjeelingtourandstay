@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Homestay Details</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="details.css">
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+
+<div class="container">
+
+<a class="navbar-brand fw-bold text-success"
+href="index.html">
+
+🌿 Darjeeling Homestay
+
+</a>
+
+<a href="index.html"
+
+class="btn btn-success">
+
+<i class="fa fa-arrow-left"></i>
+
+Back
+
+</a>
+
+</div>
+
+</nav>
+
+
+<!-- HERO IMAGE -->
+
+<section class="hero">
+
+<img
+
+id="heroImage"
+
+src=""
+
+class="img-fluid"
+
+alt="Homestay">
+
+<div class="overlay">
+
+<h1 id="homeName">
+
+Loading...
+
+</h1>
+
+<p id="homeLocation">
+
+</p>
+
+</div>
+
+</section>
+
+
+<!-- MAIN -->
+
+<div class="container my-5">
+
+<div class="row">
+
+<div class="col-lg-8">
+
+<div class="card shadow border-0 rounded-4 p-4">
+
+<h2 id="detailName"></h2>
+
+<div class="mb-3">
+
+⭐⭐⭐⭐⭐
+
+</div>
+
+<h4 class="text-success">
+
+₹ <span id="detailPrice"></span>
+
+<small>/night</small>
+
+</h4>
+
+<hr>
+
+<h5>
+
+Description
+
+</h5>
+
+<p id="detailDescription">
+
+</p>
+
+<hr>
+
+<h5>
+
+Scenery
+
+</h5>
+
+<p id="detailScenery">
+
+</p>
+
+<hr>
+
+<h5>
+
+Amenities
+
+</h5>
+
+<div id="detailAmenities">
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="col-lg-4">
+
+<div class="card shadow border-0 rounded-4 p-4 sticky-top">
+
+<h4>
+
+Contact Owner
+
+</h4>
+
+<hr>
+
+<button
+
+id="callBtn"
+
+class="btn btn-success w-100 mb-3">
+
+<i class="fa-solid fa-phone"></i>
+
+Call
+
+</button>
+
+<button
+
+id="whatsappBtn"
+
+class="btn btn-success w-100 mb-3">
+
+<i class="fa-brands fa-whatsapp"></i>
+
+WhatsApp
+
+</button>
+
+<button
+
+id="mapBtn"
+
+class="btn btn-primary w-100 mb-3">
+
+<i class="fa-solid fa-location-dot"></i>
+
+Google Map
+
+</button>
+
+<button
+
+id="websiteBtn"
+
+class="btn btn-dark w-100 mb-3">
+
+<i class="fa-solid fa-globe"></i>
+
+Website
+
+</button>
+
+<hr>
+
+<h5>
+
+Social Links
+
+</h5>
+
+<div class="d-grid gap-2">
+
+<a
+
+id="facebookBtn"
+
+target="_blank"
+
+class="btn btn-primary">
+
+Facebook
+
+</a>
+
+<a
+
+id="instagramBtn"
+
+target="_blank"
+
+class="btn btn-danger">
+
+Instagram
+
+</a>
+
+<a
+
+id="youtubeBtn"
+
+target="_blank"
+
+class="btn btn-danger">
+
+YouTube
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- RELATED -->
+
+<section class="container mb-5">
+
+<h2 class="mb-4">
+
+Related Homestays
+
+</h2>
+
+<div
+
+class="row"
+
+id="relatedHomestays">
+
+</div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer class="bg-dark text-white py-4">
+
+<div class="container text-center">
+
+<p>
+
+© 2026 Darjeeling Homestay Directory
+
+</p>
+
+</div>
+
+</footer>
+
+
+<script src="details.js"></script>
+
+</body>
+
+</html>

@@ -931,38 +931,14 @@ async function loadWithCache(){
 }
 
 /* ======================================
-   Universal Share Button Functionality
+   Share Button
 ====================================== */
 
-document.getElementById("shareBtn").addEventListener("click", async () => {
-    const shareData = {
-        title: document.title || "Darjeeling Homestay Directory",
-        text: "Check out these amazing homestays in Darjeeling!",
+document.getElementById("shareBtn").addEventListener("click", () => {
+    navigator.share({
+        title: document.title,
         url: window.location.href
-    };
-
-    // 1. Try Native Mobile / Web Share API first
-    if (navigator.share) {
-        try {
-            await navigator.share(shareData);
-            return;
-        } catch (err) {
-            if (err.name !== "AbortError") {
-                console.log("Native share cancelled or failed:", err);
-            }
-            return;
-        }
-    }
-
-    // 2. Fallback for Desktop / Insecure Environments (HTTP)
-    // Copies link to clipboard and displays custom options
-    try {
-        await navigator.clipboard.writeText(window.location.href);
-        showToast("Link copied to clipboard! 📋");
-    } catch (err) {
-        // Ultimate fallback if clipboard permission is denied
-        prompt("Copy this link to share:", window.location.href);
-    }
+    }).catch(err => console.log("Share skipped:", err));
 });
 
 /* ======================================

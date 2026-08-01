@@ -339,3 +339,110 @@ function setupButtons(){
     homestay.youtube || "#";
 
 }
+
+/* ==========================================
+   Gallery
+========================================== */
+
+function createGallery() {
+
+    const gallery =
+    document.getElementById("galleryContainer");
+
+    if (!gallery) return;
+
+    gallery.innerHTML = "";
+
+    let images = [];
+
+    if (homestay.image) {
+
+        images = homestay.image
+            .split("|")
+            .map(img => img.trim())
+            .filter(img => img !== "");
+
+    }
+
+    if (images.length === 0) {
+
+        images.push("https://placehold.co/800x500?text=No+Image");
+
+    }
+
+    images.forEach(img => {
+
+        gallery.innerHTML += `
+
+        <div class="col-lg-4 col-md-6">
+
+            <img src="${img}"
+                 class="img-fluid rounded shadow">
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+
+/* ==========================================
+   Wishlist
+========================================== */
+
+function updateWishlistButton(){
+
+    const btn =
+    document.getElementById("wishlistBtn");
+
+    if(!btn) return;
+
+    const liked =
+    wishlist.includes(String(homestay.id));
+
+    btn.innerHTML =
+    liked ?
+
+    "❤️ Remove Wishlist"
+
+    :
+
+    "🤍 Add Wishlist";
+
+    btn.onclick = toggleWishlist;
+
+}
+
+
+function toggleWishlist(){
+
+    const id = String(homestay.id);
+
+    const index =
+    wishlist.indexOf(id);
+
+    if(index > -1){
+
+        wishlist.splice(index,1);
+
+    }
+
+    else{
+
+        wishlist.push(id);
+
+    }
+
+    localStorage.setItem(
+
+        "wishlist",
+
+        JSON.stringify(wishlist)
+
+    );
+
+    updateWishlistButton();
+
+}

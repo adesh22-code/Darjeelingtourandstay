@@ -1,5 +1,5 @@
 /* ===================================================
-   DETAILS PAGE - PREMIUM DESIGN
+   DETAILS PAGE - RESPONSIVE PREMIUM DESIGN
 =================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
@@ -14,6 +14,13 @@ body{
     font-family:'Poppins',sans-serif;
     background:#f6f8fb;
     color:#333;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
 
 /* ================= NAVBAR ================= */
@@ -29,20 +36,21 @@ body{
 
 /* ================= HERO ================= */
 
-.hero{
+.hero, .hero-section {
     position:relative;
     width:100%;
     height:60vh;
+    min-height: 300px;
     overflow:hidden;
 }
 
-.hero img{
+.hero img, .hero-image{
     width:100%;
     height:100%;
     object-fit:cover;
 }
 
-.overlay{
+.overlay, .hero-overlay{
     position:absolute;
     inset:0;
     background:linear-gradient(
@@ -56,12 +64,12 @@ body{
     color:white;
 }
 
-.overlay h1{
+.overlay h1, .hero-overlay h1{
     font-size:48px;
     font-weight:700;
 }
 
-.overlay p{
+.overlay p, .hero-overlay p{
     font-size:18px;
     margin-top:10px;
 }
@@ -96,13 +104,13 @@ body{
 
 /* ================= AMENITIES ================= */
 
-#detailAmenities{
+#detailAmenities, .amenities-list{
     display:flex;
     flex-wrap:wrap;
     gap:10px;
 }
 
-#detailAmenities span{
+#detailAmenities span, .amenities-list span{
     background:#e8f5e9;
     color:#2e7d32;
     padding:10px 18px;
@@ -140,6 +148,21 @@ body{
 
 .d-grid a{
     border-radius:40px;
+}
+
+/* ================= GALLERY ================= */
+
+#galleryContainer img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease;
+}
+
+#galleryContainer img:hover {
+    transform: scale(1.02);
 }
 
 /* ================= RELATED ================= */
@@ -189,19 +212,19 @@ footer{
 
 }
 
-/* ================= MOBILE ================= */
+/* ================= RESPONSIVE BREAKPOINTS ================= */
 
 @media(max-width:992px){
 
-.hero{
+.hero, .hero-section{
     height:45vh;
 }
 
-.overlay{
+.overlay, .hero-overlay{
     padding:30px;
 }
 
-.overlay h1{
+.overlay h1, .hero-overlay h1{
     font-size:34px;
 }
 
@@ -209,16 +232,17 @@ footer{
 
 @media(max-width:768px){
 
-.hero{
+.hero, .hero-section{
     height:38vh;
 }
 
-.overlay h1{
-    font-size:28px;
+.overlay h1, .hero-overlay h1{
+    font-size:26px;
 }
 
-.overlay p{
-    font-size:15px;
+.overlay p, .hero-overlay p{
+    font-size:14px;
+    margin-top: 5px;
 }
 
 .card{
@@ -233,33 +257,39 @@ footer{
     padding:10px;
 }
 
+#galleryContainer img {
+    height: 180px;
+}
+
 }
 
 @media(max-width:576px){
 
-.hero{
-    height:32vh;
+.hero, .hero-section{
+    height:30vh;
+    min-height: 240px;
 }
 
-.overlay{
+.overlay, .hero-overlay{
     padding:20px;
 }
 
-.overlay h1{
-    font-size:24px;
+.overlay h1, .hero-overlay h1{
+    font-size:22px;
 }
 
-.overlay p{
-    font-size:14px;
+.overlay p, .hero-overlay p{
+    font-size:13px;
 }
 
 .card{
     border-radius:15px;
 }
 
-#detailAmenities span{
+#detailAmenities span, .amenities-list span{
     font-size:13px;
     padding:8px 14px;
 }
 
 }
+

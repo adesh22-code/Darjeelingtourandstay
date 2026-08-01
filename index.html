@@ -1,1 +1,872 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Darjeeling Homestay Directory</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"><style>body{font-family:Arial;background:#f5f7fa}.hero{background:#2e7d32;color:#fff;padding:80px 20px;text-align:center}.filter-bar{position:sticky;top:0;background:#fff;padding:15px;box-shadow:0 2px 8px rgba(0,0,0,.1)}.card{border-radius:16px}</style></head><body><nav class="navbar bg-white shadow-sm"><div class="container"><span class="navbar-brand fw-bold text-success">🌿 Darjeeling Homestay Directory</span></div></nav><section class="hero"><h1>Find Your Perfect Homestay</h1><p>Search authentic homestays across Darjeeling.</p><input class="form-control form-control-lg mx-auto" style="max-width:700px" placeholder="Search"></section><div class="filter-bar"><div class="container"><div class="row g-2"><div class="col-md-4"><select class="form-select"><option>All Locations</option></select></div><div class="col-md-3"><input type="range" class="form-range"></div><div class="col-md-3"><select class="form-select"><option>Sort By</option></select></div><div class="col-md-2"><button class="btn btn-success w-100">Clear</button></div></div></div></div><div class="container py-4"><h4>Showing Homestays</h4><div class="row"><div class="col-md-4"><div class="card shadow-sm"><img src="https://via.placeholder.com/600x350" class="card-img-top"><div class="card-body"><h5>Sample Homestay</h5><p>📍 Darjeeling</p><p>₹2500 / Night</p><button class="btn btn-success w-100">View Details</button></div></div></div></div></div><footer class="bg-dark text-white text-center py-4">© 2026 Darjeeling Homestay Directory</footer></body></html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Darjeeling Homestay Directory</title>
+
+    <meta name="description"
+          content="Find authentic homestays across Darjeeling, Kurseong, Mirik, Kalimpong and surrounding Himalayan villages.">
+
+    <link rel="icon"
+          href="favicon.ico">
+
+    <!-- Bootstrap -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        rel="stylesheet">
+
+    <!-- Google Font -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="style.css">
+
+</head>
+
+<body>
+
+
+<!-- ===========================
+        NAVBAR
+============================ -->
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+
+    <div class="container">
+
+        <a class="navbar-brand fw-bold text-success"
+           href="#">
+
+            🌿 Darjeeling Homestay
+
+        </a>
+
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbar">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <div class="collapse navbar-collapse"
+             id="navbar">
+
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                <li class="nav-item">
+
+                    <a class="nav-link active"
+                       href="#">
+
+                        Home
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="wishlist.html">
+
+                        <i class="fa-solid fa-heart text-danger"></i>
+
+                        Wishlist
+
+                        <span id="wishlistCount"
+                              class="badge bg-success rounded-pill ms-1">
+
+                            0
+
+                        </span>
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="#about">
+
+                        About
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="#contact">
+
+                        Contact
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- ===========================
+        HERO SECTION
+============================ -->
+
+<section class="hero">
+
+    <div class="hero-overlay">
+
+        <div class="container">
+
+            <div class="row justify-content-center">
+
+                <div class="col-lg-8 text-center text-white">
+
+                    <h1 class="display-4 fw-bold">
+
+                        Discover Authentic Homestays
+                        in Darjeeling
+
+                    </h1>
+
+                    <p class="lead mt-3">
+
+                        Explore verified homestays across
+                        Darjeeling, Sonada, Kurseong,
+                        Mirik, Takdah, Lamahatta,
+                        Lepchajagat and many more destinations.
+
+                    </p>
+
+                    <!-- Search -->
+
+                    <div class="search-box mt-5">
+
+                        <div class="input-group input-group-lg shadow">
+
+                            <span class="input-group-text bg-white border-0">
+
+                                <i class="fa-solid fa-magnifying-glass"></i>
+
+                            </span>
+
+                            <input
+
+                                id="searchInput"
+
+                                type="text"
+
+                                class="form-control border-0"
+
+                                placeholder="Search homestay, location or amenities...">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ===========================
+        FILTER BAR
+============================ -->
+
+<section class="filter-section shadow-sm">
+
+    <div class="container">
+
+        <div class="row g-3 align-items-end">
+
+            <div class="col-lg-4">
+
+                <label class="form-label fw-semibold">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    Location
+
+                </label>
+
+                <select id="locationFilter"
+                        class="form-select">
+
+                    <option value="">
+
+                        All Locations
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <label class="form-label fw-semibold">
+
+                    Maximum Price
+
+                    <span id="priceValue"
+                          class="text-success">
+
+                        ₹10000
+
+                    </span>
+
+                </label>
+
+                <input
+
+                    id="priceSlider"
+
+                    class="form-range"
+
+                    type="range"
+
+                    min="500"
+
+                    max="10000"
+
+                    step="500"
+
+                    value="10000">
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <label class="form-label fw-semibold">
+
+                    Sort
+
+                </label>
+
+                <select id="sortSelect"
+                        class="form-select">
+
+                    <option value="default">
+
+                        Default
+
+                    </option>
+
+                    <option value="priceLow">
+
+                        Price: Low → High
+
+                    </option>
+
+                    <option value="priceHigh">
+
+                        Price: High → Low
+
+                    </option>
+
+                    <option value="nameAZ">
+
+                        Name A → Z
+
+                    </option>
+
+                    <option value="nameZA">
+
+                        Name Z → A
+
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </div>
+
+  </section>
+<!-- ===========================
+        DIRECTORY SECTION
+============================ -->
+
+<section class="directory-section py-5">
+
+    <div class="container">
+
+        <!-- Top Bar -->
+
+        <div class="row align-items-center mb-4">
+
+            <div class="col-lg-6">
+
+                <h3 class="fw-bold mb-1">
+
+                    Homestay Directory
+
+                </h3>
+
+                <p class="text-muted mb-0">
+
+                    Showing
+
+                    <span id="resultCount"
+                          class="fw-bold text-success">
+
+                        0
+
+                    </span>
+
+                    Homestays
+
+                </p>
+
+            </div>
+
+            <div class="col-lg-6 text-lg-end mt-3 mt-lg-0">
+
+                <button
+
+                    id="clearFilters"
+
+                    class="btn btn-outline-success">
+
+                    <i class="fa-solid fa-filter-circle-xmark"></i>
+
+                    Clear Filters
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- Loading -->
+
+        <div
+
+            id="loading"
+
+            class="text-center py-5">
+
+            <div class="spinner-border text-success"
+                 role="status">
+
+            </div>
+
+            <p class="mt-3">
+
+                Loading Homestays...
+
+            </p>
+
+        </div>
+
+
+
+        <!-- No Result -->
+
+        <div
+
+            id="noResult"
+
+            class="text-center py-5 d-none">
+
+            <i class="fa-solid fa-house-circle-xmark
+                      display-3 text-secondary">
+
+            </i>
+
+            <h3 class="mt-4">
+
+                No Homestays Found
+
+            </h3>
+
+            <p class="text-muted">
+
+                Try changing your search or filters.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- Cards -->
+
+        <div
+
+            class="row g-4"
+
+            id="homestayContainer">
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ===========================
+        FLOATING BUTTONS
+============================ -->
+
+<button
+
+    id="topBtn"
+
+    class="btn btn-success rounded-circle shadow">
+
+    <i class="fa-solid fa-arrow-up"></i>
+
+</button>
+
+
+
+<a
+
+    href="wishlist.html"
+
+    id="floatingWishlist"
+
+    class="btn btn-danger rounded-circle shadow">
+
+    <i class="fa-solid fa-heart"></i>
+
+</a>
+
+
+
+<!-- ===========================
+        ABOUT
+============================ -->
+
+<section
+
+    id="about"
+
+    class="py-5 bg-light">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-8 mx-auto text-center">
+
+                <h2 class="fw-bold">
+
+                    About This Directory
+
+                </h2>
+
+                <p class="lead mt-3">
+
+                    This directory helps travellers
+                    discover authentic homestays across
+                    Darjeeling Hills using verified
+                    information collected from owners.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ===========================
+        CONTACT
+============================ -->
+
+<section
+
+    id="contact"
+
+    class="py-5">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-8 mx-auto">
+
+                <div class="card shadow border-0">
+
+                    <div class="card-body p-4">
+
+                        <h3 class="fw-bold mb-4">
+
+                            Contact
+
+                        </h3>
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+
+                                <p>
+
+                                    <i class="fa-solid fa-envelope text-success"></i>
+
+                                    info@example.com
+
+                                </p>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <p>
+
+                                    <i class="fa-solid fa-phone text-success"></i>
+
+                                    +91 XXXXX XXXXX
+
+                                </p>
+
+                            </div>
+
+                            <div class="col-12">
+
+                                <p>
+
+                                    <i class="fa-solid fa-location-dot text-success"></i>
+
+                                    Darjeeling, West Bengal, India
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+  </section>
+
+  <!-- ===========================
+        IMAGE PREVIEW MODAL
+============================ -->
+
+<div class="modal fade"
+     id="imageModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+
+        <div class="modal-content border-0">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    Homestay Photo
+
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+
+                </button>
+
+            </div>
+
+            <div class="modal-body p-0">
+
+                <img
+
+                    id="previewImage"
+
+                    src=""
+
+                    class="img-fluid w-100"
+
+                    alt="Homestay">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ===========================
+        TOAST NOTIFICATION
+============================ -->
+
+<div
+
+    class="toast-container position-fixed
+           bottom-0 end-0 p-3">
+
+    <div
+
+        id="toastMessage"
+
+        class="toast align-items-center
+               text-bg-success border-0"
+
+        role="alert">
+
+        <div class="d-flex">
+
+            <div
+                id="toastText"
+                class="toast-body">
+
+                Success
+
+            </div>
+
+            <button
+
+                type="button"
+
+                class="btn-close btn-close-white
+                       me-2 m-auto"
+
+                data-bs-dismiss="toast">
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ===========================
+        FOOTER
+============================ -->
+
+<footer class="bg-dark text-white pt-5 pb-4">
+
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Brand -->
+
+            <div class="col-lg-4 mb-4">
+
+                <h4 class="fw-bold">
+
+                    🌿 Darjeeling Homestay
+
+                </h4>
+
+                <p class="mt-3">
+
+                    Discover authentic homestays across
+                    Darjeeling Hills using a simple,
+                    searchable directory powered by
+                    Google Sheets.
+
+                </p>
+
+            </div>
+
+
+
+            <!-- Quick Links -->
+
+            <div class="col-lg-2 col-md-6 mb-4">
+
+                <h5>
+
+                    Quick Links
+
+                </h5>
+
+                <ul class="list-unstyled">
+
+                    <li>
+
+                        <a href="#"
+                           class="text-white text-decoration-none">
+
+                            Home
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="#about"
+                           class="text-white text-decoration-none">
+
+                            About
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="#contact"
+                           class="text-white text-decoration-none">
+
+                            Contact
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+
+            <!-- Contact -->
+
+            <div class="col-lg-3 col-md-6 mb-4">
+
+                <h5>
+
+                    Contact
+
+                </h5>
+
+                <p>
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    Darjeeling, West Bengal
+
+                </p>
+
+                <p>
+
+                    <i class="fa-solid fa-envelope"></i>
+
+                    info@example.com
+
+                </p>
+
+            </div>
+
+
+
+            <!-- Social -->
+
+            <div class="col-lg-3 mb-4">
+
+                <h5>
+
+                    Follow Us
+
+                </h5>
+
+                <div class="d-flex gap-3 fs-4">
+
+                    <a href="#"
+                       class="text-white">
+
+                        <i class="fab fa-facebook"></i>
+
+                    </a>
+
+                    <a href="#"
+                       class="text-white">
+
+                        <i class="fab fa-instagram"></i>
+
+                    </a>
+
+                    <a href="#"
+                       class="text-white">
+
+                        <i class="fab fa-youtube"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <div class="text-center">
+
+            © 2026 Darjeeling Homestay Directory
+
+            <br>
+
+            Designed with ❤️ in the Himalayas
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<!-- ===========================
+        JAVASCRIPT
+============================ -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="app.js"></script>
+  

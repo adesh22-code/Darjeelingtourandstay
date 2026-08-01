@@ -933,26 +933,28 @@ async function loadWithCache(){
 //Share
 document.getElementById("shareBtn").addEventListener("click", async () => {
 
-    // Current page URL (e.g. details.html?id=5)
-    const shareUrl = window.location.href;
+    const shareData = {
+        title: document.title,
+        text: "Check out this homestay!",
+        url: window.location.href
+    };
+
+    alert("Share button clicked");
+
+    if (!navigator.share) {
+        alert("Web Share API is not supported on this browser.");
+        return;
+    }
 
     try {
-        if (navigator.share) {
-            await navigator.share({
-                title: homestay.name,
-                text: `Check out this homestay: ${homestay.name} in ${homestay.location}`,
-                url: shareUrl
-            });
-        } else {
-            await navigator.clipboard.writeText(shareUrl);
-            alert("Link copied to clipboard.");
-        }
-    } catch (err) {
-        console.log("Share cancelled.", err);
+        await navigator.share(shareData);
+        alert("Shared successfully");
+    } catch (e) {
+        alert("Error: " + e.message);
+        console.log(e);
     }
 
 });
-
 
 /* ======================================
    Console

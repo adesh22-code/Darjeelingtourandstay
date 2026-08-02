@@ -172,3 +172,16 @@ img {
         height: 220px;
     }
 }
+
+/*MOBILE*/
+
+@media(max-width:768px){
+
+.hero-section{
+
+height:40vh;
+min-height:260px;
+
+}
+
+}

@@ -421,9 +421,10 @@ function createGallery() {
 
     let images = [];
 
-    if (homestay.image) {
+    // Read images only from the gallery column
+    if (homestay.gallery) {
 
-        images = homestay.image
+        images = homestay.gallery
             .split("|")
             .map(img => img.trim())
             .filter(img => img !== "");
@@ -432,7 +433,13 @@ function createGallery() {
 
     if (images.length === 0) {
 
-        images.push("https://placehold.co/800x500?text=No+Image");
+        gallery.innerHTML = `
+            <div class="col-12 text-center text-muted">
+                <p>No gallery images available.</p>
+            </div>
+        `;
+
+        return;
 
     }
 
@@ -440,10 +447,12 @@ function createGallery() {
 
         gallery.innerHTML += `
 
-        <div class="col-lg-4 col-md-6">
+        <div class="col-lg-4 col-md-6 col-6 mb-3">
 
             <img src="${img}"
-                 class="img-fluid rounded shadow">
+                 class="img-fluid rounded shadow gallery-image"
+                 onclick="openImage('${img}')"
+                 style="cursor:pointer;height:220px;width:100%;object-fit:cover;">
 
         </div>
 

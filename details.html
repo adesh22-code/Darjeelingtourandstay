@@ -2,194 +2,656 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homestay Details</title>
-    <meta name="description" content="Darjeeling Homestay Directory">
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Homestay Details</title>
+
+    <meta name="description"
+          content="Darjeeling Homestay Directory">
+
+    <!-- Bootstrap 5 -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          rel="stylesheet">
+
     <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
     <link rel="stylesheet" href="details.css">
+
 </head>
 
-<body style="font-family: 'Poppins', sans-serif;">
+<body>
+
 
 <!-- ===========================
         NAVBAR
 =========================== -->
+
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+
     <div class="container">
-        <a class="navbar-brand fw-bold text-success" href="index.html">
-            🌿 Darjeeling Homestay
+
+        <a class="navbar-brand fw-bold text-success"
+           href="index.html">
+
+            🌿 Darjeeling Homestay Directory
+
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
-                aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+
             <span class="navbar-toggler-icon"></span>
+
         </button>
 
-        <div class="collapse navbar-collapse" id="navbar">
+        <div class="collapse navbar-collapse"
+             id="navbarNav">
+
             <ul class="navbar-nav ms-auto">
+
                 <li class="nav-item">
-                    <a class="nav-link" href="index.html">Home</a>
+
+                    <a class="nav-link"
+                       href="index.html">
+
+                        Home
+
+                    </a>
+
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link" href="wishlist.html">❤️ Wishlist</a>
+
+                    <a class="nav-link"
+                       href="wishlist.html">
+
+                        ❤️ Wishlist
+
+                    </a>
+
                 </li>
+
             </ul>
+
         </div>
+
     </div>
+
 </nav>
+
+
 
 <!-- ===========================
         HERO IMAGE
 =========================== -->
+
 <section class="hero-section">
-    <div class="w-100">
-        <img id="heroImage"
-             src="https://via.placeholder.com/1600x600?text=Homestay+Image"
-             class="hero-image w-100"
-             alt="Homestay Image"
-             loading="lazy">
+
+    <img id="heroImage"
+         class="hero-image"
+         src=""
+         alt="Homestay Image">
+
+    <div class="hero-overlay">
+
+        <div class="container">
+
+            <a href="index.html"
+               class="btn btn-light mb-4">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Back to Directory
+
+            </a>
+
+            <h1 id="homeName"
+                class="display-4 fw-bold text-white">
+
+                Loading...
+
+            </h1>
+
+            <p id="homeLocation"
+               class="text-white fs-5 mb-0">
+
+            </p>
+
+        </div>
+
     </div>
+
 </section>
+
+
 
 <!-- ===========================
         SUMMARY CARD
 =========================== -->
-<section class="summary-section py-4">
+
+<section class="summary-section">
+
     <div class="container">
-        <div class="card summary-card border-0 shadow">
+
+        <div class="card summary-card border-0">
+
             <div class="card-body">
+
                 <div class="row align-items-center">
+
                     <div class="col-lg-8">
-                        <h2 id="detailName" class="fw-bold mb-1"></h2>
-                        <p id="detailLocation" class="text-muted mb-2"></p>
-                        <h3 id="detailPrice" class="text-success fw-semibold"></h3>
+
+                        <h2 id="detailName"
+                            class="fw-bold">
+
+                        </h2>
+
+                        <p id="detailLocation"
+                           class="text-muted mb-2">
+
+                        </p>
+
+                        <h3 id="detailPrice"
+                            class="text-success fw-bold">
+
+                        </h3>
+
                     </div>
-                    <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-                        <button type="button" id="wishlistBtn" class="btn btn-outline-danger me-2">
+
+                    <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+
+                        <button id="wishlistBtn"
+                                class="btn btn-outline-danger me-2">
+
                             ❤️ Wishlist
+
                         </button>
-                        <button type="button" id="shareBtn" class="btn btn-success">
-                            <i class="fa-solid fa-share"></i> Share
+
+                        <button id="shareBtn"
+                                class="btn btn-success">
+
+                            <i class="fa-solid fa-share"></i>
+
+                            Share
+
                         </button>
+
                     </div>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
+
 </section>
 
-<!-- ===========================
-        DESCRIPTION
+
+    <!-- ===========================
+        DESCRIPTION & SIDEBAR
 =========================== -->
+
 <section class="py-5">
+
     <div class="container">
+
         <div class="row g-4">
+
+            <!-- Left Side -->
+
             <div class="col-lg-8">
-                <div class="card border-0 shadow rounded-4 mb-4">
+
+                <!-- About -->
+
+                <div class="card shadow-sm border-0 rounded-4 mb-4">
+
                     <div class="card-body p-4">
-                        <h3 class="fw-bold mb-4">About This Homestay</h3>
-                        <p id="detailDescription" class="lead mb-0"></p>
+
+                        <h3 class="fw-bold mb-4">
+
+                            <i class="fa-solid fa-house text-success"></i>
+
+                            About This Homestay
+
+                        </h3>
+
+                        <p id="detailDescription"
+                           class="lead text-muted">
+
+                        </p>
+
                     </div>
+
                 </div>
 
-                <div class="card border-0 shadow rounded-4">
+
+                <!-- Scenic Highlights -->
+
+                <div class="card shadow-sm border-0 rounded-4 mb-4">
+
                     <div class="card-body p-4">
-                        <h3 class="fw-bold mb-4">Scenic Highlights</h3>
-                        <p id="detailScenery" class="lead mb-0"></p>
+
+                        <h3 class="fw-bold mb-4">
+
+                            <i class="fa-solid fa-mountain-sun text-success"></i>
+
+                            Scenic Highlights
+
+                        </h3>
+
+                        <p id="detailScenery"
+                           class="lead text-muted">
+
+                        </p>
+
                     </div>
+
                 </div>
+
+
+                <!-- Photo Gallery -->
+
+                <div class="card shadow-sm border-0 rounded-4">
+
+                    <div class="card-body p-4">
+
+                        <h3 class="fw-bold mb-4">
+
+                            <i class="fa-solid fa-images text-success"></i>
+
+                            Photo Gallery
+
+                        </h3>
+
+                        <div id="galleryContainer"
+                             class="row g-3">
+
+                            <!-- Images loaded by JavaScript -->
+
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <!-- Sidebar -->
+
+            <!-- Right Side -->
+
             <div class="col-lg-4">
+
                 <!-- Amenities -->
-                <div class="card border-0 shadow rounded-4 mb-4">
+
+                <div class="card shadow-sm border-0 rounded-4 mb-4">
+
                     <div class="card-body">
-                        <h4 class="fw-bold mb-4">Amenities</h4>
-                        <div id="detailAmenities" class="amenities-list"></div>
+
+                        <h4 class="fw-bold mb-4">
+
+                            <i class="fa-solid fa-list-check text-success"></i>
+
+                            Amenities
+
+                        </h4>
+
+                        <div id="detailAmenities"
+                             class="amenities-list">
+
+                        </div>
+
                     </div>
+
                 </div>
+
 
                 <!-- Contact -->
-                <div class="card border-0 shadow rounded-4">
+
+                <div class="card shadow-sm border-0 rounded-4 mb-4">
+
                     <div class="card-body">
-                        <h4 class="fw-bold mb-4">Contact Owner</h4>
+
+                        <h4 class="fw-bold mb-4">
+
+                            <i class="fa-solid fa-phone text-success"></i>
+
+                            Contact
+
+                        </h4>
+
                         <div class="d-grid gap-3">
-                            <button type="button" id="callBtn" class="btn btn-success">
-                                <i class="fa-solid fa-phone"></i> Call Now
+
+                            <button id="callBtn"
+                                    class="btn btn-success">
+
+                                <i class="fa-solid fa-phone"></i>
+
+                                Call Now
+
                             </button>
-                            <button type="button" id="whatsappBtn" class="btn btn-success">
-                                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+
+                            <button id="whatsappBtn"
+                                    class="btn btn-success">
+
+                                <i class="fa-brands fa-whatsapp"></i>
+
+                                WhatsApp
+
                             </button>
-                            <button type="button" id="mapBtn" class="btn btn-outline-success">
-                                <i class="fa-solid fa-location-dot"></i> Google Map
+
+                            <button id="mapBtn"
+                                    class="btn btn-outline-success">
+
+                                <i class="fa-solid fa-location-dot"></i>
+
+                                Google Map
+
                             </button>
-                            <button type="button" id="websiteBtn" class="btn btn-outline-success">
-                                <i class="fa-solid fa-globe"></i> Website
+
+                            <button id="websiteBtn"
+                                    class="btn btn-outline-success">
+
+                                <i class="fa-solid fa-globe"></i>
+
+                                Visit Website
+
                             </button>
+
                         </div>
+
                     </div>
+
                 </div>
+
+
+                <!-- Social Media -->
+
+                <div class="card shadow-sm border-0 rounded-4">
+
+                    <div class="card-body text-center">
+
+                        <h4 class="fw-bold mb-4">
+
+                            Follow Us
+
+                        </h4>
+
+                        <div class="d-grid gap-3">
+
+                            <a id="facebookBtn"
+                               href="#"
+                               target="_blank"
+                               class="btn btn-primary">
+
+                                <i class="fab fa-facebook-f"></i>
+
+                                Facebook
+
+                            </a>
+
+                            <a id="instagramBtn"
+                               href="#"
+                               target="_blank"
+                               class="btn btn-danger">
+
+                                <i class="fab fa-instagram"></i>
+
+                                Instagram
+
+                            </a>
+
+                            <a id="youtubeBtn"
+                               href="#"
+                               target="_blank"
+                               class="btn btn-danger">
+
+                                <i class="fab fa-youtube"></i>
+
+                                YouTube
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
+
         </div>
+
     </div>
+
 </section>
+<!-- ===========================
+        IMAGE PREVIEW MODAL
+=========================== -->
+
+<div class="modal fade"
+     id="imageModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+
+        <div class="modal-content border-0">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    Homestay Gallery
+
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+
+                </button>
+
+            </div>
+
+            <div class="modal-body p-0">
+
+                <img
+                    id="previewImage"
+                    src=""
+                    class="img-fluid w-100"
+                    alt="Homestay">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
 
 <!-- ===========================
-        SOCIAL MEDIA
+        TOAST NOTIFICATION
 =========================== -->
-<section class="pb-5">
-    <div class="container">
-        <div class="card border-0 shadow rounded-4">
-            <div class="card-body text-center">
-                <h3 class="fw-bold mb-4">Follow This Homestay</h3>
-                <div class="d-flex justify-content-center flex-wrap gap-3">
-                    <a id="facebookBtn" href="#" target="_blank" rel="noopener" class="btn btn-primary">
-                        <i class="fab fa-facebook-f"></i> Facebook
-                    </a>
-                    <a id="instagramBtn" href="#" target="_blank" rel="noopener" class="btn btn-danger">
-                        <i class="fab fa-instagram"></i> Instagram
-                    </a>
-                    <a id="youtubeBtn" href="#" target="_blank" rel="noopener" class="btn btn-danger">
-                        <i class="fab fa-youtube"></i> YouTube
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
-<!-- ===========================
-        PHOTO GALLERY
-=========================== -->
-<section class="pb-5">
-    <div class="container">
-        <h2 class="fw-bold mb-4">Photo Gallery</h2>
-        <div id="galleryContainer" class="row g-4">
-            <!-- Images will come from JavaScript -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+
+    <div id="toastMessage"
+         class="toast text-bg-success border-0"
+         role="alert">
+
+        <div class="d-flex">
+
+            <div id="toastText"
+                 class="toast-body">
+
+                Success
+
+            </div>
+
+            <button
+                type="button"
+                class="btn-close btn-close-white me-2 m-auto"
+                data-bs-dismiss="toast">
+
+            </button>
+
         </div>
+
     </div>
-</section>
+
+</div>
+
+
 
 <!-- ===========================
         FOOTER
 =========================== -->
+
 <footer class="bg-dark text-white py-5 mt-5">
-    <div class="container text-center">
-        <h4>🌿 Darjeeling Homestay Directory</h4>
-        <p class="mt-3">Discover authentic Himalayan hospitality.</p>
-        <hr class="border-secondary">
-        <p class="mb-0">© 2026 Darjeeling Homestay Directory</p>
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-5 mb-4">
+
+                <h4 class="fw-bold">
+
+                    🌿 Darjeeling Homestay Directory
+
+                </h4>
+
+                <p class="mt-3">
+
+                    Explore authentic homestays across
+                    Darjeeling, Kurseong, Mirik, Kalimpong,
+                    Takdah, Lamahatta and nearby Himalayan
+                    destinations.
+
+                </p>
+
+            </div>
+
+            <div class="col-lg-3 mb-4">
+
+                <h5>
+
+                    Quick Links
+
+                </h5>
+
+                <ul class="list-unstyled">
+
+                    <li class="mb-2">
+
+                        <a href="index.html"
+                           class="text-white text-decoration-none">
+
+                            Home
+
+                        </a>
+
+                    </li>
+
+                    <li class="mb-2">
+
+                        <a href="wishlist.html"
+                           class="text-white text-decoration-none">
+
+                            Wishlist
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <div class="col-lg-4 mb-4">
+
+                <h5>
+
+                    Follow Us
+
+                </h5>
+
+                <div class="d-flex gap-3 fs-3">
+
+                    <a href="#"
+                       class="text-white">
+
+                        <i class="fab fa-facebook"></i>
+
+                    </a>
+
+                    <a href="#"
+                       class="text-white">
+
+                        <i class="fab fa-instagram"></i>
+
+                    </a>
+
+                    <a href="#"
+                       class="text-white">
+
+                        <i class="fab fa-youtube"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <div class="text-center">
+
+            © 2026 Darjeeling Homestay Directory
+
+            <br>
+
+            Designed with ❤️ for the Hills of Darjeeling
+
+        </div>
+
     </div>
+
 </footer>
 
+
+
+<!-- ===========================
+        JAVASCRIPT
+=========================== -->
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
 <script src="details.js"></script>
+
 </body>
+
 </html>
+    

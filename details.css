@@ -24,13 +24,17 @@ img {
 }
 
 /* ================= NAVBAR ================= */
-.navbar {
-    padding: 12px 0;
+.navbar{
+
+padding:12px 0;
+
 }
 
-.navbar-brand {
-    font-size: 22px;
-    font-weight: 700;
+.navbar-brand{
+
+font-size:1.9rem;
+font-weight:700;
+
 }
 
 /* ================= HERO SECTION ================= */
@@ -141,6 +145,21 @@ img {
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
+.gallery-image{
+
+aspect-ratio:4/3;
+object-fit:cover;
+border-radius:15px;
+transition:.3s;
+
+}
+
+.gallery-image:hover{
+
+transform:scale(1.05);
+
+}
+
 /* ================= DESKTOP BREAKPOINTS ================= */
 @media (min-width: 992px) {
     .hero, .hero-section {
@@ -181,6 +200,22 @@ img {
 
 height:40vh;
 min-height:260px;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.navbar{
+
+padding:8px 0;
+
+}
+
+.navbar-brand{
+
+font-size:1.4rem;
 
 }
 

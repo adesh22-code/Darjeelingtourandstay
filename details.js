@@ -132,49 +132,95 @@ function renderAmenities() {
 function setupButtons() {
     // Phone Call Handler
     const handleCall = () => {
-        if (homestay.phone) {
+        if (homestay && homestay.phone) {
             window.location.href = `tel:${homestay.phone}`;
         } else {
             showToast("Phone number not provided.");
         }
     };
 
-    document.getElementById("callBtn").onclick = handleCall;
+    const callBtn = document.getElementById("callBtn");
+    if (callBtn) callBtn.onclick = handleCall;
+
     const mobileCallBtn = document.getElementById("mobileCallBtn");
     if (mobileCallBtn) mobileCallBtn.onclick = handleCall;
 
     // WhatsApp Action
-    document.getElementById("whatsappBtn").onclick = () => {
-        if (homestay.whatsapp) {
-            const cleanNumber = homestay.whatsapp.replace(/[^0-9]/g, '');
-            window.open(`https://wa.me/${cleanNumber}`, "_blank");
-        } else {
-            showToast("WhatsApp contact not available.");
-        }
-    };
+    const whatsappBtn = document.getElementById("whatsappBtn");
+    if (whatsappBtn) {
+        whatsappBtn.onclick = () => {
+            if (homestay && homestay.whatsapp) {
+                const cleanNumber = homestay.whatsapp.replace(/[^0-9]/g, '');
+                window.open(`https://wa.me/${cleanNumber}`, "_blank");
+            } else {
+                showToast("WhatsApp contact not available.");
+            }
+        };
+    }
 
     // Google Maps Link
-    document.getElementById("mapBtn").onclick = () => {
-        if (homestay.googleMap) {
-            window.open(homestay.googleMap, "_blank");
-        } else {
-            showToast("Map direction link not available.");
-        }
-    };
+    const mapBtn = document.getElementById("mapBtn");
+    if (mapBtn) {
+        mapBtn.onclick = () => {
+            if (homestay && homestay.googleMap) {
+                window.open(homestay.googleMap, "_blank");
+            } else {
+                showToast("Map direction link not available.");
+            }
+        };
+    }
 
     // Website Link
     const websiteBtn = document.getElementById("websiteBtn");
-    if (homestay.website && homestay.website !== "#") {
-        websiteBtn.onclick = () => window.open(homestay.website, "_blank");
-    } else {
-        websiteBtn.style.display = "none";
+    if (websiteBtn) {
+        if (homestay && homestay.website && homestay.website !== "#") {
+            websiteBtn.onclick = () => window.open(homestay.website, "_blank");
+        } else {
+            websiteBtn.style.display = "none";
+        }
     }
 
-    // Social Media Links Setup
+    // Dynamic Share Handler (Native Share Drawer + Clipboard Fallback)
+    const handleShare = async (e) => {
+        if (e) e.preventDefault();
+
+        const shareData = {
+            title: homestay ? homestay.name : document.title,
+            text: homestay ? `🏡 Check out ${homestay.name} in ${homestay.location}!` : "Check out this homestay!",
+            url: window.location.href
+        };
+
+        // Check if Web Share API is available (Requires HTTPS on Mobile Browsers)
+        if (navigator.share) {
+            try {
+                await navigator.share(shareData);
+            } catch (err) {
+                // Fired if the user cancels out of the share drawer
+                console.log("Share sheet dismissed or canceled:", err);
+            }
+        } else {
+            // Fallback for HTTP testing, Desktop Chrome, or unsupported browsers
+            try {
+                await navigator.clipboard.writeText(window.location.href);
+                showToast("Link copied to clipboard!");
+            } catch (err) {
+                // Ultimate fallback if clipboard access is denied
+                prompt("Copy this link to share:", window.location.href);
+            }
+        }
+    };
+
+    // Attach click handler to ALL Share buttons on the page (by ID or Class)
+    const shareBtns = document.querySelectorAll("#shareBtn, .share-btn");
+    shareBtns.forEach(btn => {
+        btn.onclick = handleShare;
+    });
+
+    // Social Links setup
     const socialLinks = [
-        { id: "facebookBtn", url: homestay.facebook },
-        { id: "instagramBtn", url: homestay.instagram },
-        { id: "youtubeBtn", url: homestay.youtube }
+        { id: "facebookBtn", url: homestay ? homestay.facebook : "" },
+        { id: "instagramBtn", url: homestay ? homestay.instagram : "" },
+        { id: "youtubeBtn", url: homestay ? homestay.youtube : "" }
     ];
 
     let hasSocials = false;
@@ -198,52 +244,8 @@ function setupButtons() {
         const socialCard = document.getElementById("socialCard");
         if (socialCard) socialCard.style.display = "none";
     }
-
-   const handleShare = async () => {
-    const shareData = {
-        title: homestay.name,
-        text: `🏡 Check out ${homestay.name} in ${homestay.location}!`,
-        url: window.location.href // Shares the direct page URL
-    };
-
-    // Opens the native Android/iOS share drawer
-    if (navigator.share) {
-        try {
-            await navigator.share(shareData);
-        } catch (err) {
-            // Fires if the user opens the drawer but cancels out
-            console.log("Share dismissed by user:", err);
-        }
-    } else {
-        // Fallback for browsers that don't support native sharing sheets
-        navigator.clipboard.writeText(window.location.href);
-        showToast("Link copied to clipboard!");
-    }
-};
-
-    /*// Share Handler
-    const shareBtn = document.getElementById("shareBtn");
-    if (shareBtn) {
-        shareBtn.onclick = async () => {
-            const shareData = {
-                title: homestay.name,
-                text: `🏡 ${homestay.name}\n📍 ${homestay.location}\n₹ ${homestay.price}`,
-                url: window.location.href
-            };
-
-            if (navigator.share) {
-                try {
-                    await navigator.share(shareData);
-                } catch (err) {
-                    console.error("Share failed", err);
-                }
-            } else {
-                navigator.clipboard.writeText(window.location.href);
-                showToast("Link copied to clipboard!");
-            }
-        };*/
-    }
 }
+
 
 /* ================= GALLERY ENGINE ================= */
 function createGallery() {

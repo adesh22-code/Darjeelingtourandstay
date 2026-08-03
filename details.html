@@ -169,18 +169,24 @@
     </div>
 </section>
 
-<!-- ================= MOBILE FIXED BOTTOM ACTION BAR ================= -->
+    <!-- ================= MOBILE FIXED BOTTOM ACTION BAR ================= -->
 <div class="mobile-action-bar d-flex align-items-center justify-content-between d-lg-none">
     <div>
-        <span class="small text-muted">Price:</span>
-        <div id="mobilePrice" class="fw-bold text-success fs-6">--</div>
+        <span class="small text-muted d-block" style="font-size: 11px;">Price</span>
+        <div id="mobilePrice" class="fw-bold text-success fs-6 lh-1">--</div>
     </div>
-    <div class="d-flex gap-2">
-        <button id="mobileWishlistBtn" class="btn btn-outline-danger btn-sm rounded-circle px-3 py-2">
+    <div class="d-flex gap-2 align-items-center">
+        <!-- Wishlist Button -->
+        <button id="mobileWishlistBtn" class="btn btn-outline-danger btn-sm rounded-circle px-2 py-1" type="button">
             ❤️
         </button>
-        <button id="mobileCallBtn" class="btn btn-success btn-sm px-3">
+        <!-- Call Button -->
+        <button id="mobileCallBtn" class="btn btn-success btn-sm px-3" type="button">
             <i class="fa-solid fa-phone me-1"></i> Call
+        </button>
+        <!-- Share Button (Placed right beside Call) -->
+        <button id="shareBtn" class="btn btn-outline-secondary btn-sm px-3" type="button">
+            <i class="fa-solid fa-share-nodes me-1"></i> Share
         </button>
     </div>
 </div>
@@ -241,7 +247,82 @@
         </div>
     </div>
 </footer>
+    
 
+<!-- ================= MOBILE FIXED BOTTOM ACTION BAR ================= 
+<div class="mobile-action-bar d-flex align-items-center justify-content-between d-lg-none">
+    <div>
+        <span class="small text-muted">Price:</span>
+        <div id="mobilePrice" class="fw-bold text-success fs-6">--</div>
+    </div>
+    <div class="d-flex gap-2">
+        <button id="mobileWishlistBtn" class="btn btn-outline-danger btn-sm rounded-circle px-3 py-2">
+            ❤️
+        </button>
+        <button id="mobileCallBtn" class="btn btn-success btn-sm px-3">
+            <i class="fa-solid fa-phone me-1"></i> Call
+        </button>
+    </div>
+</div> 
+
+<!-- ================= IMAGE PREVIEW MODAL ================= 
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+            <div class="modal-header border-0 pb-0">
+                <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-2">
+                <img id="previewImage" src="" class="img-fluid rounded shadow-lg" alt="Full Preview View" style="max-height: 85vh; object-fit: contain;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================= TOAST NOTIFICATION ================= 
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1090;">
+    <div id="toastMessage" class="toast align-items-center text-bg-dark border-0 rounded-3 shadow" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div id="toastText" class="toast-body fs-6">
+                Action Completed
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<!-- ================= FOOTER ================= 
+<footer class="bg-dark text-white py-5">
+    <div class="container">
+        <div class="row gy-4">
+            <div class="col-lg-5">
+                <h4 class="fw-bold text-success mb-3">🌿 Darjeeling Homestay Directory</h4>
+                <p class="text-secondary mb-0">Explore authentic, verified homestays across Darjeeling, Kurseong, Mirik, Kalimpong, Takdah, Lamahatta, and nearby Himalayan gems.</p>
+            </div>
+            <div class="col-lg-3 offset-lg-1">
+                <h5 class="h6 text-uppercase fw-bold text-light mb-3">Quick Navigation</h5>
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-2"><a href="index.html" class="text-secondary text-decoration-none">Home Directory</a></li>
+                    <li class="mb-2"><a href="wishlist.html" class="text-secondary text-decoration-none">My Wishlist</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3">
+                <h5 class="h6 text-uppercase fw-bold text-light mb-3">Follow Us</h5>
+                <div class="d-flex gap-3 fs-4">
+                    <a href="#" class="text-secondary"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-secondary"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-secondary"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <hr class="my-4 border-secondary">
+        <div class="text-center text-secondary small">
+            © 2026 Darjeeling Homestay Directory. All rights reserved.
+        </div>
+    </div>
+</footer>
+    
+-->
 <!-- JavaScript Dependencies -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="details.js"></script>

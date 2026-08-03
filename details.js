@@ -199,7 +199,29 @@ function setupButtons() {
         if (socialCard) socialCard.style.display = "none";
     }
 
-    // Share Handler
+   const handleShare = async () => {
+    const shareData = {
+        title: homestay.name,
+        text: `🏡 Check out ${homestay.name} in ${homestay.location}!`,
+        url: window.location.href // Shares the direct page URL
+    };
+
+    // Opens the native Android/iOS share drawer
+    if (navigator.share) {
+        try {
+            await navigator.share(shareData);
+        } catch (err) {
+            // Fires if the user opens the drawer but cancels out
+            console.log("Share dismissed by user:", err);
+        }
+    } else {
+        // Fallback for browsers that don't support native sharing sheets
+        navigator.clipboard.writeText(window.location.href);
+        showToast("Link copied to clipboard!");
+    }
+};
+
+    /*// Share Handler
     const shareBtn = document.getElementById("shareBtn");
     if (shareBtn) {
         shareBtn.onclick = async () => {
@@ -219,7 +241,7 @@ function setupButtons() {
                 navigator.clipboard.writeText(window.location.href);
                 showToast("Link copied to clipboard!");
             }
-        };
+        };*/
     }
 }
 

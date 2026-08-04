@@ -259,8 +259,8 @@ function setupEnquiryForm() {
     enquiryForm.onsubmit = function (e) {
         e.preventDefault();
 
-        // Target homestay owner phone or fall back to column data
-        const ownerPhone = (homestay && homestay.phone) ? homestay.phone.replace(/[^0-9+]/g, '') : "";
+        // Clean phone number (keep digits and leading + if present)
+        let ownerPhone = (homestay && homestay.phone) ? homestay.phone.replace(/[^0-9+]/g, '') : "";
 
         if (!ownerPhone) {
             showToast("Owner phone number is not available.");
@@ -279,7 +279,19 @@ function setupEnquiryForm() {
                         `Check-in: ${checkIn}\n` +
                         `Check-out: ${checkOut}`;
 
-        window.location.href = `sms:${ownerPhone}?body=${encodeURIComponent(message)}`;
+        // iOS requires '&body=' while Android uses '?body='
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+        const separator = isIOS ? '&' : '?';
+        const smsUrl = `sms:${ownerPhone}${separator}body=${encodeURIComponent(message)}`;
+
+        // Create temporary anchor to reliably launch native SMS app on mobile
+        const link = document.createElement('a');
+        link.href = smsUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 }
 

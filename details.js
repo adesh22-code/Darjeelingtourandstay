@@ -4,7 +4,9 @@
 =========================================================== */
 
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWXIyW8Zk4YXmIK4Bl1g2cMIIWBEOaaIrfSM2zaWsTr63lmc0Td8lDm2kY11Ap2w/pub?gid=942226858&single=true&output=csv";
-
+/*
+const DATA_URL = "data.json";
+*/
 let homestay = null;
 let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
 const id = new URLSearchParams(window.location.search).get("id");
@@ -16,7 +18,10 @@ async function loadHomestay() {
         const response = await fetch(SHEET_URL);
         const csv = await response.text();
         const homes = csvToObjects(csv);
-
+        /*
+        const response = await fetch(DATA_URL);
+        const homes = await response.json();
+         */
         homestay = homes.find(h => String(h.id) === String(id));
 
         if (!homestay) {

@@ -42,7 +42,7 @@ body {
     z-index: 1050;
     
     /* A soft translucent white tint */
-    background: rgba(255, 255, 255, 0.15); 
+    background: rgba(255, 255, 255, 0.5); 
     
     /* Gentle blur to keep it glowing and glassy */
     backdrop-filter: blur(12px);

@@ -39,7 +39,10 @@ body{
 }
 
 /* ================= NAVBAR ================= */
-position: sticky;
+
+
+.navbar{
+    position: sticky;
     top: 0;
     z-index: 1050;
 
@@ -54,13 +57,9 @@ position: sticky;
 
     transition: all .3s ease;
 
-    padding: 10px 0;
-/*. */
-
-.navbar{
+     /*. */
 
     padding:14px 0;
-    background:#fff!important;
     box-shadow:0 3px 15px rgba(0,0,0,.06);
 
 }

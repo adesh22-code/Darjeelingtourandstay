@@ -234,6 +234,38 @@ position: sticky;
     white-space: nowrap;
 }
 
+/* ================= ENQUIRY FORM STYLES ================= */
+#enquiryForm .form-label {
+    color: #4a5568;
+    letter-spacing: 0.3px;
+}
+
+#enquiryForm .form-control {
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.95rem;
+    transition: all 0.2s ease-in-out;
+}
+
+#enquiryForm .form-control:focus {
+    border-color: #198754;
+    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.15);
+}
+
+#enquiryForm button[type="submit"] {
+    border-radius: 10px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    transition: transform 0.15s ease, background-color 0.2s ease;
+}
+
+#enquiryForm button[type="submit"]:active {
+    transform: scale(0.98);
+}
+
+
+
 /* ================= RESPONSIVE BREAKPOINTS ================= */
 @media (min-width: 992px) {
     .navbar-brand {

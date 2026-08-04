@@ -234,34 +234,37 @@ position: sticky;
     white-space: nowrap;
 }
 
-/* ================= ENQUIRY FORM STYLES ================= */
-#enquiryForm .form-label {
-    color: #4a5568;
-    letter-spacing: 0.3px;
+/* ================= MOBILE FORM FIXES ================= */
+#enquiryForm .form-control {
+    width: 100%;
+    min-height: 48px; /* Forces mobile browsers to show full input height */
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da !important;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    color: #212529;
+    display: block;
 }
 
-#enquiryForm .form-control {
-    border-radius: 10px;
-    border: 1px solid #e2e8f0;
-    padding: 0.65rem 0.9rem;
-    font-size: 0.95rem;
-    transition: all 0.2s ease-in-out;
+/* Fixes invisible date picker on Android/iOS */
+#enquiryForm input[type="date"] {
+    min-height: 48px;
+    position: relative;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+#enquiryForm input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    position: absolute;
+    right: 12px;
 }
 
 #enquiryForm .form-control:focus {
-    border-color: #198754;
+    background-color: #ffffff;
+    border-color: #198754 !important;
     box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.15);
-}
-
-#enquiryForm button[type="submit"] {
-    border-radius: 10px;
-    padding: 0.75rem;
-    font-size: 1rem;
-    transition: transform 0.15s ease, background-color 0.2s ease;
-}
-
-#enquiryForm button[type="submit"]:active {
-    transform: scale(0.98);
 }
 
 

@@ -252,7 +252,7 @@ function setupButtons() {
     }
 }
 
-/* ================= ENQUIRY FORM (WHATSAPP SYSTEM) ================= */
+/* ================= ENQUIRY FORM (SMS SYSTEM) ================= */
 function setupEnquiryForm() {
     const enquiryForm = document.getElementById("enquiryForm");
     if (!enquiryForm) return;
@@ -260,20 +260,12 @@ function setupEnquiryForm() {
     enquiryForm.onsubmit = function (e) {
         e.preventDefault();
 
-        // Retrieve WhatsApp or Phone number from sheet data
-        let ownerPhone = homestay ? (homestay.whatsapp || homestay.phone || "") : "";
-        
-        // Strip non-numeric characters
-        ownerPhone = ownerPhone.replace(/[^0-9]/g, '');
+        // Clean phone number (keep digits and leading + if present)
+        let ownerPhone = (homestay && homestay.phone) ? homestay.phone.replace(/[^0-9+]/g, '') : "";
 
         if (!ownerPhone) {
-            showToast("Owner contact number is not available.");
+            showToast("Owner phone number is not available.");
             return;
-        }
-
-        // Auto-prepend India country code (+91) if 10 digits provided
-        if (ownerPhone.length === 10) {
-            ownerPhone = "91" + ownerPhone;
         }
 
         const name = document.getElementById("enquiryName").value;
@@ -282,17 +274,27 @@ function setupEnquiryForm() {
         const checkOut = document.getElementById("enquiryCheckOut").value;
         const homestayName = homestay ? homestay.name : "Homestay";
 
-        const message = `Hello! I would like to enquire about *${homestayName}*:\n\n` +
-                        `👤 *Name:* ${name}\n` +
-                        `📞 *Phone:* ${phone}\n` +
-                        `📅 *Check-in:* ${checkIn}\n` +
-                        `📅 *Check-out:* ${checkOut}`;
+        const message = `Hello! Enquiry for ${homestayName}:\n` +
+                        `Name: ${name}\n` +
+                        `Phone: ${phone}\n` +
+                        `Check-in: ${checkIn}\n` +
+                        `Check-out: ${checkOut}`;
 
-        const whatsappUrl = `https://wa.me/${ownerPhone}?text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, "_blank");
+        // iOS requires '&body=' while Android uses '?body='
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+        const separator = isIOS ? '&' : '?';
+        const smsUrl = `sms:${ownerPhone}${separator}body=${encodeURIComponent(message)}`;
+
+        // Create temporary anchor to reliably launch native SMS app on mobile
+        const link = document.createElement('a');
+        link.href = smsUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 }
-
 
 /* ================= GALLERY ENGINE ================= */
 function createGallery() {

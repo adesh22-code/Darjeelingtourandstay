@@ -1,0 +1,1663 @@
+/* =========================================================
+                VIBE STAY
+        Professional Tourism Directory
+        PART 1
+========================================================= */
+
+/* Google Fonts */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Sora:wght@500;600;700&display=swap');
+
+
+/* =========================================================
+                    VARIABLES
+========================================================= */
+
+:root{
+
+    --primary:#198754;
+    --primary-dark:#146c43;
+
+    --secondary:#ffffff;
+
+    --text:#222;
+
+    --light:#f8f9fa;
+
+    --border:#e8e8e8;
+
+    --shadow:
+        0 15px 40px rgba(0,0,0,.08);
+
+    --radius:18px;
+
+    --transition:.35s;
+
+}
+
+
+/* =========================================================
+                    RESET
+========================================================= */
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+}
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+body{
+
+    font-family:'Poppins',sans-serif;
+
+    color:var(--text);
+
+    background:#f5f7f8;
+
+    overflow-x:hidden;
+
+}
+
+
+/* =========================================================
+                SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#ececec;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:var(--primary);
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:var(--primary-dark);
+
+}
+
+
+/* =========================================================
+                    LINKS
+========================================================= */
+
+a{
+
+    text-decoration:none;
+
+}
+
+img{
+
+    max-width:100%;
+
+    display:block;
+
+}
+
+
+/* =========================================================
+                    GLASS NAVBAR
+========================================================= */
+
+.navbar{
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    z-index:9999;
+
+    padding:14px 0;
+
+    background:rgba(255,255,255,.12);
+
+    backdrop-filter:
+        blur(30px)
+        saturate(180%);
+
+    -webkit-backdrop-filter:
+        blur(30px)
+        saturate(180%);
+
+    border-bottom:
+
+        1px solid rgba(255,255,255,.25);
+
+    box-shadow:
+
+        0 10px 35px rgba(0,0,0,.08),
+
+        inset 0 1px 0 rgba(255,255,255,.35);
+
+    transition:.4s;
+
+}
+
+
+/* Navbar after scroll */
+
+.navbar.scrolled{
+
+    background:rgba(255,255,255,.22);
+
+    backdrop-filter:
+        blur(35px)
+        saturate(220%);
+
+}
+
+
+/* =========================================================
+                    BRAND
+========================================================= */
+
+.navbar-brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    font-family:'Sora',sans-serif;
+
+    font-size:30px;
+
+    font-weight:700;
+
+    color:var(--primary)!important;
+
+}
+
+
+.brand-logo{
+
+    width:52px;
+
+    height:52px;
+
+    object-fit:contain;
+
+}
+
+
+/* =========================================================
+                NAVIGATION LINKS
+========================================================= */
+
+.nav-link{
+
+    position:relative;
+
+    color:#222!important;
+
+    font-weight:600;
+
+    padding:10px 18px!important;
+
+    margin-left:12px;
+
+    border-radius:50px;
+
+    transition:.35s;
+
+}
+
+.nav-link:hover{
+
+    color:var(--primary)!important;
+
+    background:
+
+        rgba(255,255,255,.25);
+
+}
+
+
+/* Active Link */
+
+.nav-link.active{
+
+    background:
+
+        rgba(255,255,255,.35);
+
+    color:var(--primary)!important;
+
+}
+
+
+/* Mobile Menu */
+
+.navbar-collapse{
+
+    border-radius:20px;
+
+}
+
+
+/* =========================================================
+                HERO SECTION
+========================================================= */
+
+.hero{
+
+    position:relative;
+
+    width:100%;
+
+    height:100vh;
+
+    min-height:650px;
+
+    overflow:hidden;
+
+}
+
+
+/* Background Image */
+
+.hero img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    object-position:center;
+
+}
+
+
+/* Dark Overlay */
+
+.hero::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+        linear-gradient(
+
+            rgba(0,0,0,.20),
+
+            rgba(0,0,0,.55)
+
+        );
+
+}
+
+
+/* Hero Content */
+
+.hero-content{
+
+    position:absolute;
+
+    left:50%;
+
+    top:55%;
+
+    transform:translate(-50%,-50%);
+
+    width:100%;
+
+    text-align:center;
+
+    color:white;
+
+    z-index:10;
+
+    padding:20px;
+
+}
+
+
+.hero-content h1{
+
+    font-size:62px;
+
+    font-weight:800;
+
+    margin-bottom:20px;
+
+    text-shadow:
+
+        0 5px 20px rgba(0,0,0,.30);
+
+}
+
+
+.hero-content p{
+
+    font-size:22px;
+
+    font-weight:400;
+
+    max-width:700px;
+
+    margin:auto;
+
+    line-height:1.8;
+
+}
+
+
+/* =========================================================
+                FLOATING SEARCH BOX
+========================================================= */
+
+.search-wrapper{
+
+    position:relative;
+
+    margin-top:-70px;
+
+    z-index:100;
+
+}
+
+.search-box{
+
+    background:rgba(255,255,255,.85);
+
+    backdrop-filter:blur(20px);
+
+    -webkit-backdrop-filter:blur(20px);
+
+    border-radius:24px;
+
+    padding:28px;
+
+    box-shadow:0 15px 45px rgba(0,0,0,.12);
+
+}
+
+
+/* =========================================================
+                    SEARCH INPUT
+========================================================= */
+
+.search-input{
+
+    height:58px;
+
+    border-radius:50px;
+
+    border:1px solid #ddd;
+
+    padding:0 22px;
+
+    font-size:16px;
+
+    transition:.3s;
+
+}
+
+.search-input:focus{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 0 .2rem rgba(25,135,84,.15);
+
+}
+
+
+/* =========================================================
+                FILTER CONTROLS
+========================================================= */
+
+.filter-select{
+
+    height:58px;
+
+    border-radius:50px;
+
+    border:1px solid #ddd;
+
+    padding:0 18px;
+
+    font-size:15px;
+
+    transition:.3s;
+
+}
+
+.filter-select:focus{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 0 .2rem rgba(25,135,84,.15);
+
+}
+
+
+/* =========================================================
+                PRICE SLIDER
+========================================================= */
+
+.price-slider{
+
+    width:100%;
+
+    accent-color:var(--primary);
+
+    cursor:pointer;
+
+}
+
+.price-label{
+
+    font-weight:600;
+
+    color:var(--primary);
+
+    margin-top:10px;
+
+}
+
+
+/* =========================================================
+                    BUTTONS
+========================================================= */
+
+.btn{
+
+    border-radius:50px;
+
+    font-weight:600;
+
+    transition:.35s;
+
+}
+
+.btn-success{
+
+    background:var(--primary);
+
+    border:none;
+
+}
+
+.btn-success:hover{
+
+    background:var(--primary-dark);
+
+    transform:translateY(-2px);
+
+}
+
+.btn-outline-success{
+
+    border:2px solid var(--primary);
+
+    color:var(--primary);
+
+}
+
+.btn-outline-success:hover{
+
+    background:var(--primary);
+
+    color:#fff;
+
+}
+
+
+/* =========================================================
+                HOMESTAY GRID
+========================================================= */
+
+#homestayContainer{
+
+    margin-top:45px;
+
+}
+
+
+/* =========================================================
+                HOMESTAY CARD
+========================================================= */
+
+.home-card{
+
+    background:#fff;
+
+    border:none;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    box-shadow:0 10px 35px rgba(0,0,0,.08);
+
+    transition:.35s;
+
+    height:100%;
+
+}
+
+.home-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 18px 45px rgba(0,0,0,.15);
+
+}
+
+
+/* =========================================================
+                CARD IMAGE
+========================================================= */
+
+.home-card img{
+
+    width:100%;
+
+    height:240px;
+
+    object-fit:cover;
+
+    transition:.4s;
+
+}
+
+.home-card:hover img{
+
+    transform:scale(1.08);
+
+}
+
+
+/* =========================================================
+                CARD BODY
+========================================================= */
+
+.home-card .card-body{
+
+    padding:22px;
+
+}
+
+.home-card h5{
+
+    font-size:22px;
+
+    font-weight:700;
+
+    margin-bottom:10px;
+
+}
+
+.home-card p{
+
+    color:#666;
+
+    margin-bottom:10px;
+
+}
+
+
+/* =========================================================
+                PRICE BADGE
+========================================================= */
+
+.price-badge{
+
+    display:inline-block;
+
+    background:var(--primary);
+
+    color:#fff;
+
+    padding:8px 18px;
+
+    border-radius:50px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+
+/* =========================================================
+                LOCATION BADGE
+========================================================= */
+
+.location-badge{
+
+    display:inline-block;
+
+    background:#eef8f2;
+
+    color:var(--primary);
+
+    padding:7px 16px;
+
+    border-radius:50px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+
+/* =========================================================
+                WISHLIST BUTTON
+========================================================= */
+
+.wishlist-btn{
+
+    position:absolute;
+
+    top:18px;
+
+    right:18px;
+
+    width:45px;
+
+    height:45px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.90);
+
+    backdrop-filter:blur(10px);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.wishlist-btn:hover{
+
+    transform:scale(1.1);
+
+}
+
+.wishlist-btn.active{
+
+    color:red;
+
+  }
+
+/* =========================================================
+                    GALLERY
+========================================================= */
+
+.gallery{
+
+    margin-top:60px;
+
+}
+
+.gallery-item{
+
+    position:relative;
+
+    overflow:hidden;
+
+    border-radius:20px;
+
+    cursor:pointer;
+
+    box-shadow:0 12px 35px rgba(0,0,0,.08);
+
+}
+
+.gallery-item img{
+
+    width:100%;
+
+    height:260px;
+
+    object-fit:cover;
+
+    transition:.45s;
+
+}
+
+.gallery-item:hover img{
+
+    transform:scale(1.12);
+
+}
+
+.gallery-item::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:linear-gradient(
+        transparent,
+        rgba(0,0,0,.25)
+    );
+
+}
+
+
+/* =========================================================
+                    STAR RATING
+========================================================= */
+
+.rating{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:3px;
+
+    margin:12px 0;
+
+}
+
+.rating i{
+
+    color:#ffc107;
+
+    font-size:15px;
+
+}
+
+.rating span{
+
+    margin-left:8px;
+
+    color:#666;
+
+    font-size:14px;
+
+}
+
+
+/* =========================================================
+                AMENITIES BADGES
+========================================================= */
+
+.amenities{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-top:18px;
+
+}
+
+.amenities span{
+
+    background:#eef8f2;
+
+    color:var(--primary);
+
+    padding:8px 15px;
+
+    border-radius:50px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+
+/* =========================================================
+                CARD FOOTER
+========================================================= */
+
+.card-footer{
+
+    background:transparent;
+
+    border:none;
+
+    padding:22px;
+
+}
+
+
+/* =========================================================
+                PAGINATION
+========================================================= */
+
+.pagination{
+
+    margin-top:55px;
+
+    justify-content:center;
+
+}
+
+.page-link{
+
+    border:none;
+
+    margin:0 5px;
+
+    width:46px;
+
+    height:46px;
+
+    border-radius:50% !important;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:var(--primary);
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.page-link:hover{
+
+    background:var(--primary);
+
+    color:#fff;
+
+}
+
+.page-item.active .page-link{
+
+    background:var(--primary);
+
+    color:#fff;
+
+}
+
+
+/* =========================================================
+                FLOATING BUTTONS
+========================================================= */
+
+.floating-btn{
+
+    position:fixed;
+
+    right:20px;
+
+    width:58px;
+
+    height:58px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+
+    font-size:22px;
+
+    text-decoration:none;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.18);
+
+    z-index:999;
+
+    transition:.3s;
+
+}
+
+.floating-btn:hover{
+
+    transform:scale(1.08);
+
+}
+
+.whatsapp-btn{
+
+    bottom:90px;
+
+    background:#25D366;
+
+}
+
+.top-btn{
+
+    bottom:20px;
+
+    background:var(--primary);
+
+}
+
+
+/* =========================================================
+                    FOOTER
+========================================================= */
+
+footer{
+
+    margin-top:90px;
+
+    background:#111;
+
+    color:#ddd;
+
+    padding:70px 0 30px;
+
+}
+
+footer h4,
+footer h5{
+
+    color:#fff;
+
+    margin-bottom:20px;
+
+    font-weight:700;
+
+}
+
+footer p{
+
+    color:#bbb;
+
+    line-height:1.8;
+
+}
+
+footer ul{
+
+    list-style:none;
+
+    padding:0;
+
+}
+
+footer ul li{
+
+    margin-bottom:12px;
+
+}
+
+footer ul li a{
+
+    color:#bbb;
+
+    transition:.3s;
+
+}
+
+footer ul li a:hover{
+
+    color:#fff;
+
+    padding-left:8px;
+
+}
+
+.footer-social{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:20px;
+
+}
+
+.footer-social a{
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.08);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+
+    transition:.3s;
+
+}
+
+.footer-social a:hover{
+
+    background:var(--primary);
+
+    transform:translateY(-4px);
+
+}
+
+.footer-bottom{
+
+    border-top:1px solid rgba(255,255,255,.12);
+
+    margin-top:40px;
+
+    padding-top:25px;
+
+    text-align:center;
+
+    color:#999;
+
+}
+
+
+/* =========================================================
+                ANIMATIONS
+========================================================= */
+
+.fade-up{
+
+    animation:fadeUp .8s ease;
+
+}
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(40px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.zoom{
+
+    animation:zoom .5s ease;
+
+}
+
+@keyframes zoom{
+
+    from{
+
+        transform:scale(.92);
+
+        opacity:0;
+
+    }
+
+    to{
+
+        transform:scale(1);
+
+        opacity:1;
+
+    }
+
+}
+
+
+/* =========================================================
+                UTILITIES
+========================================================= */
+
+.shadow-custom{
+
+    box-shadow:var(--shadow);
+
+}
+
+.rounded-xl{
+
+    border-radius:22px;
+
+}
+
+.text-primary-custom{
+
+    color:var(--primary);
+
+}
+
+.bg-primary-light{
+
+    background:#eef8f2;
+
+}
+
+.section-title{
+
+    font-size:38px;
+
+    font-weight:700;
+
+    margin-bottom:18px;
+
+}
+
+.section-subtitle{
+
+    color:#666;
+
+    max-width:650px;
+
+    margin:auto;
+
+    margin-bottom:45px;
+
+}
+
+/* =========================================================
+                RESPONSIVE DESIGN
+========================================================= */
+
+/* Large Desktop */
+
+@media (min-width:1400px){
+
+    .container{
+
+        max-width:1320px;
+
+    }
+
+    .hero-content h1{
+
+        font-size:72px;
+
+    }
+
+}
+
+
+/* Laptop */
+
+@media (max-width:1200px){
+
+    .hero-content h1{
+
+        font-size:54px;
+
+    }
+
+}
+
+
+/* Tablet */
+
+@media (max-width:992px){
+
+    .navbar{
+
+        padding:10px 0;
+
+    }
+
+    .brand-logo{
+
+        width:44px;
+        height:44px;
+
+    }
+
+    .navbar-brand{
+
+        font-size:24px;
+
+    }
+
+    .navbar-collapse{
+
+        margin-top:15px;
+
+        padding:20px;
+
+        border-radius:18px;
+
+        background:rgba(255,255,255,.18);
+
+        backdrop-filter:blur(25px);
+
+        -webkit-backdrop-filter:blur(25px);
+
+    }
+
+    .nav-link{
+
+        margin:8px 0;
+
+        padding:12px 18px !important;
+
+    }
+
+    .hero{
+
+        height:75vh;
+
+        min-height:600px;
+
+    }
+
+    .hero-content h1{
+
+        font-size:46px;
+
+    }
+
+    .hero-content p{
+
+        font-size:20px;
+
+    }
+
+    .search-wrapper{
+
+        margin-top:-45px;
+
+    }
+
+}
+
+
+/* Mobile */
+
+@media (max-width:768px){
+
+    body{
+
+        font-size:15px;
+
+    }
+
+    .navbar{
+
+        padding:8px 0;
+
+    }
+
+    .brand-logo{
+
+        width:38px;
+        height:38px;
+
+    }
+
+    .navbar-brand{
+
+        font-size:20px;
+
+    }
+
+    .hero{
+
+        height:65vh;
+
+        min-height:420px;
+
+    }
+
+    .hero-content{
+
+        padding:20px;
+
+    }
+
+    .hero-content h1{
+
+        font-size:34px;
+
+        line-height:1.3;
+
+    }
+
+    .hero-content p{
+
+        font-size:16px;
+
+    }
+
+    .search-wrapper{
+
+        margin-top:-35px;
+
+    }
+
+    .search-box{
+
+        padding:20px;
+
+        border-radius:18px;
+
+    }
+
+    .home-card img{
+
+        height:220px;
+
+    }
+
+    .section-title{
+
+        font-size:30px;
+
+    }
+
+    footer{
+
+        text-align:center;
+
+    }
+
+    .footer-social{
+
+        justify-content:center;
+
+    }
+
+}
+
+
+/* Small Mobile */
+
+@media (max-width:576px){
+
+    .hero{
+
+        height:60vh;
+
+        min-height:360px;
+
+    }
+
+    .hero-content h1{
+
+        font-size:28px;
+
+    }
+
+    .hero-content p{
+
+        font-size:15px;
+
+    }
+
+    .navbar-brand{
+
+        font-size:18px;
+
+    }
+
+    .brand-logo{
+
+        width:34px;
+
+        height:34px;
+
+    }
+
+    .search-box{
+
+        padding:18px;
+
+    }
+
+    .btn{
+
+        width:100%;
+
+        margin-bottom:10px;
+
+    }
+
+    .wishlist-btn{
+
+        width:40px;
+
+        height:40px;
+
+        font-size:16px;
+
+    }
+
+    .gallery-item img{
+
+        height:180px;
+
+    }
+
+}
+
+
+/* =========================================================
+                IMAGE EFFECTS
+========================================================= */
+
+img{
+
+    transition:transform .4s ease;
+
+}
+
+img:hover{
+
+    transform:scale(1.02);
+
+}
+
+
+/* =========================================================
+                BUTTON RIPPLE EFFECT
+========================================================= */
+
+.btn{
+
+    overflow:hidden;
+
+    position:relative;
+
+}
+
+.btn::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:rgba(255,255,255,.15);
+
+    opacity:0;
+
+    transition:.3s;
+
+}
+
+.btn:hover::after{
+
+    opacity:1;
+
+}
+
+
+/* =========================================================
+                GLASS CARD
+========================================================= */
+
+.glass{
+
+    background:rgba(255,255,255,.12);
+
+    backdrop-filter:blur(20px);
+
+    -webkit-backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,.25);
+
+}
+
+
+/* =========================================================
+                SELECTION
+========================================================= */
+
+::selection{
+
+    background:var(--primary);
+
+    color:#fff;
+
+}
+
+
+/* =========================================================
+                FOCUS
+========================================================= */
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus{
+
+    outline:none;
+
+}
+
+
+/* =========================================================
+                LOADING SPINNER
+========================================================= */
+
+.spinner{
+
+    width:60px;
+
+    height:60px;
+
+    border-radius:50%;
+
+    border:6px solid #eee;
+
+    border-top:6px solid var(--primary);
+
+    animation:spin 1s linear infinite;
+
+    margin:auto;
+
+}
+
+@keyframes spin{
+
+    100%{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+
+/* =========================================================
+                SCROLL ANIMATION
+========================================================= */
+
+.reveal{
+
+    opacity:0;
+
+    transform:translateY(40px);
+
+    transition:1s;
+
+}
+
+.reveal.active{
+
+    opacity:1;
+
+    transform:translateY(0);
+
+}
+
+
+/* =========================================================
+                PRINT
+========================================================= */
+
+@media print{
+
+    .navbar,
+    footer,
+    .floating-btn,
+    .wishlist-btn{
+
+        display:none;
+
+    }
+
+}
+
+
+/* =========================================================
+                END OF STYLE.CSS
+========================================================= */

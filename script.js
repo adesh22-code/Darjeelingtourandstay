@@ -6,6 +6,7 @@
 const SHEET_URL =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWXIyW8Zk4YXmIK4Bl1g2cMIIWBEOaaIrfSM2zaWsTr63lmc0Td8lDm2kY11Ap2w/pub?gid=942226858&single=true&output=csv";
 
+/*const DATA_URL = "data.json";*/
 /* ======================================
    Global Variables
 ====================================== */
@@ -110,6 +111,10 @@ await response.text();
 
 homestays=
 csvToObjects(csv);
+
+/*const response = await fetch(DATA_URL);
+
+const homes = await response.json();*/
 
 filteredHomestays=
 [...homestays];

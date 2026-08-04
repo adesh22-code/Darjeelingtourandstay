@@ -45,8 +45,7 @@ body {
     background: rgba(255, 255, 255, 0.1); 
     
     /* Gentle blur to keep it glowing and glassy */
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    bac
     
     /* Creates a soft luminous glow/halo effect around the navbar */
     box-shadow: 0 4px 30px rgba(255, 255, 255, 0.2), 
@@ -61,8 +60,6 @@ body {
 /* Optional: Keep scrolled clean too, or add a very faint tint only when scrolling*/ 
 .navbar.scrolled {
     background: rgba(255, 255, 255, 0.1) !important; 
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 } 
 

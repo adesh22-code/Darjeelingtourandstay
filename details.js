@@ -109,6 +109,7 @@ function displayHomestay() {
     setupButtons();
     createGallery();
     updateWishlistButton();
+    setupEnquiryForm();
 }
 
 /* ================= AMENITIES ================= */

@@ -251,6 +251,38 @@ function setupButtons() {
     }
 }
 
+/* ================= ENQUIRY FORM (SMS SYSTEM) ================= */
+function setupEnquiryForm() {
+    const enquiryForm = document.getElementById("enquiryForm");
+    if (!enquiryForm) return;
+
+    enquiryForm.onsubmit = function (e) {
+        e.preventDefault();
+
+        // Target homestay owner phone or fall back to column data
+        const ownerPhone = (homestay && homestay.phone) ? homestay.phone.replace(/[^0-9+]/g, '') : "";
+
+        if (!ownerPhone) {
+            showToast("Owner phone number is not available.");
+            return;
+        }
+
+        const name = document.getElementById("enquiryName").value;
+        const phone = document.getElementById("enquiryPhone").value;
+        const checkIn = document.getElementById("enquiryCheckIn").value;
+        const checkOut = document.getElementById("enquiryCheckOut").value;
+        const homestayName = homestay ? homestay.name : "Homestay";
+
+        const message = `Hello! Enquiry for ${homestayName}:\n` +
+                        `Name: ${name}\n` +
+                        `Phone: ${phone}\n` +
+                        `Check-in: ${checkIn}\n` +
+                        `Check-out: ${checkOut}`;
+
+        window.location.href = `sms:${ownerPhone}?body=${encodeURIComponent(message)}`;
+    };
+}
+
 
 /* ================= GALLERY ENGINE ================= */
 function createGallery() {

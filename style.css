@@ -58,13 +58,13 @@ body {
     padding: 14px 0;
 }
 
-/* Optional: Keep scrolled clean too, or add a very faint tint only when scrolling 
+/* Optional: Keep scrolled clean too, or add a very faint tint only when scrolling*/ 
 .navbar.scrolled {
     background: rgba(255, 255, 255, 0.95) !important; 
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-} */
+} 
 
 .navbar-brand {
     display: flex;

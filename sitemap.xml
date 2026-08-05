@@ -3,18 +3,16 @@
   
   <!-- Homepage -->
   <url>
-    <loc>https://stayvibe.store/</loc>
+    <loc>https://vibestay.store/</loc>
     <lastmod>2026-08-05</lastmod>
     <priority>1.0</priority>
   </url>
 
-  <!-- Darjeeling Page -->
+  <!-- Darjeeling Page - fixed URL -->
   <url>
-    <loc>https://stayvibe.store</loc>
+    <loc>https://vibestay.store/</loc>
     <lastmod>2026-08-05</lastmod>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
 
-  <!-- Add more pages here later -->
-  
 </urlset>

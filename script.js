@@ -78,7 +78,7 @@ function hideLoading(){
    Start
 ====================================== */
 
-document.addEventListener(
+/*document.addEventListener(
 
 "DOMContentLoaded",
 
@@ -90,7 +90,12 @@ updateWishlistCount();
 
 }
 
-);
+);*/
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadWithCache(); // Use cache instead of direct load
+    updateWishlistCount();
+});
 
 
 /* ======================================

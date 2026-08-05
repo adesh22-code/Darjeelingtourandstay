@@ -13,15 +13,15 @@ const id = new URLSearchParams(window.location.search).get("id");
 
 document.addEventListener("DOMContentLoaded", loadHomestay);
 
-async function loadHomestay() {
+/*async function loadHomestay() {
     try {
         const response = await fetch(SHEET_URL);
         const csv = await response.text();
         const homes = csvToObjects(csv);
-        /*
+        --
         const response = await fetch(DATA_URL);
         const homes = await response.json();
-         */
+         --
         homestay = homes.find(h => String(h.id) === String(id));
 
         if (!homestay) {
@@ -41,6 +41,41 @@ async function loadHomestay() {
         displayHomestay();
     } catch (err) {
         console.error("Error loading CSV:", err);
+    }
+}
+*/
+
+async function loadHomestay() {
+    try {
+        let homes;
+        const cache = localStorage.getItem("homestay_cache");
+
+        if (cache) {
+            homes = JSON.parse(cache);
+        } else {
+            const response = await fetch(SHEET_URL);
+            const csv = await response.text();
+            homes = csvToObjects(csv);
+        }
+
+        homestay = homes.find(h => String(h.id) === String(id));
+
+        if (!homestay) {
+            document.body.innerHTML = `
+                <div class="container py-5 text-center">
+                    <div class="alert alert-warning shadow-sm rounded-4 p-5">
+                        <i class="fa-solid fa-triangle-exclamation fs-1 text-warning mb-3"></i>
+                        <h3 class="fw-bold">Homestay Not Found</h3>
+                        <a href="index.html" class="btn btn-success mt-2">Return to Directory</a>
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        displayHomestay();
+    } catch (err) {
+        console.error("Error loading homestay details:", err);
     }
 }
 

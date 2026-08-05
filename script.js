@@ -905,72 +905,37 @@ const CACHE_DURATION =
 
 /* Optional cache loader */
 
-async function loadWithCache(){
+async function loadWithCache() {
+    showLoading();
+    try {
+        const cache = localStorage.getItem(CACHE_KEY);
+        const time = localStorage.getItem(CACHE_TIME);
 
-    const cache =
+        if (cache && time && (Date.now() - Number(time) < CACHE_DURATION)) {
+            homestays = JSON.parse(cache);
+        } else {
+            const response = await fetch(SHEET_URL);
+            const csv = await response.text();
+            homestays = csvToObjects(csv);
+            
+            localStorage.setItem(CACHE_KEY, JSON.stringify(homestays));
+            localStorage.setItem(CACHE_TIME, Date.now().toString());
+        }
 
-    localStorage.getItem(CACHE_KEY);
-
-    const time =
-
-    localStorage.getItem(CACHE_TIME);
-
-    if(
-
-        cache &&
-
-        time &&
-
-        Date.now()-Number(time)
-
-        < CACHE_DURATION
-
-    ){
-
-        homestays =
-
-        JSON.parse(cache);
-
+        filteredHomestays = [...homestays];
+        populateLocations();
+        applyFilters();
+    } catch (error) {
+        console.error("Cache loading error:", error);
+        container.innerHTML = `
+            <div class="col-12 text-center py-5">
+                <div class="alert alert-danger">
+                    Failed to load homestay data. Please refresh.
+                </div>
+            </div>`;
+    } finally {
+        hideLoading();
     }
-
-    else{
-
-        const response =
-
-        await fetch(SHEET_URL);
-
-        const csv =
-
-        await response.text();
-
-        homestays =
-
-        csvToObjects(csv);
-
-        localStorage.setItem(
-
-            CACHE_KEY,
-
-            JSON.stringify(homestays)
-
-        );
-
-        localStorage.setItem(
-
-            CACHE_TIME,
-
-            Date.now()
-
-        );
-
-    }
-
-    filteredHomestays = [...homestays];
-
-    populateLocations();
-
-    applyFilters();
-
 }
 
 /* nav bar scrolling*/

@@ -909,13 +909,25 @@ document.getElementById("imageModal")
 
 async function loadWithCache() {
     showLoading();
+    let loadedFromCache = false;
+
     try {
         const cache = localStorage.getItem(CACHE_KEY);
         const time = localStorage.getItem(CACHE_TIME);
 
         if (cache && time && (Date.now() - Number(time) < CACHE_DURATION)) {
-            homestays = JSON.parse(cache);
-        } else {
+            try {
+                const parsedData = JSON.parse(cache);
+                if (Array.isArray(parsedData) && parsedData.length > 0) {
+                    homestays = parsedData;
+                    loadedFromCache = true;
+                }
+            } catch (e) {
+                localStorage.removeItem(CACHE_KEY);
+            }
+        }
+
+        if (!loadedFromCache) {
             const response = await fetch(SHEET_URL);
             const csv = await response.text();
             homestays = csvToObjects(csv);
@@ -928,11 +940,11 @@ async function loadWithCache() {
         populateLocations();
         applyFilters();
     } catch (error) {
-        console.error("Cache loading error:", error);
+        console.error("Loading error:", error);
         container.innerHTML = `
             <div class="col-12 text-center py-5">
                 <div class="alert alert-danger">
-                    Failed to load homestay data. Please refresh.
+                    Unable to load homestay data. Please refresh.
                 </div>
             </div>`;
     } finally {

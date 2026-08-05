@@ -3,6 +3,18 @@
    APP.JS - PART 3A
 ================================================== */
 
+/* ======================================
+   Cache Google Sheet
+====================================== */
+
+const CACHE_KEY = "homestay_cache";
+
+const CACHE_TIME = "homestay_cache_time";
+
+const CACHE_DURATION =
+
+30 * 60 * 1000;
+
 const SHEET_URL =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWXIyW8Zk4YXmIK4Bl1g2cMIIWBEOaaIrfSM2zaWsTr63lmc0Td8lDm2kY11Ap2w/pub?gid=942226858&single=true&output=csv";
 
@@ -890,17 +902,7 @@ document.getElementById("imageModal")
 });
 
 
-/* ======================================
-   Cache Google Sheet
-====================================== */
 
-const CACHE_KEY = "homestay_cache";
-
-const CACHE_TIME = "homestay_cache_time";
-
-const CACHE_DURATION =
-
-30 * 60 * 1000;
 
 
 /* Optional cache loader */

@@ -33,7 +33,7 @@ body {
 }
 
 /* ==========================================
-   NAVBAR & BRANDING
+   OPTIMIZED NAVBAR & BRANDING
 ========================================== */
 
 .navbar {
@@ -41,25 +41,28 @@ body {
     top: 0;
     z-index: 1050;
     
-    /* A soft translucent white tint */
-    background: rgba(255, 255, 255, 0.1); 
+    /* Slightly increased opacity so heavy blur isn't required */
+    background: rgba(255, 255, 255, 0.85); 
     
-    /* Gentle blur to keep it glowing and glassy */
-    bac
+    /* Optimized low-radius blur */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     
-    /* Creates a soft luminous glow/halo effect around the navbar */
-    box-shadow: 0 4px 30px rgba(255, 255, 255, 0.2), 
-                0 8px 32px rgba(0, 0, 0, 0.05);
-                
+    /* Lighter box-shadow for smoother scroll */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     
-    transition: all .3s ease;
+    /* Explicit transitions only on transform/opacity for GPU efficiency */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
     padding: 14px 0;
+
+    /* Hardware acceleration */
+    will-change: transform;
+    transform: translateZ(0);
 }
 
-/* Optional: Keep scrolled clean too, or add a very faint tint only when scrolling*/ 
 .navbar.scrolled {
-    background: rgba(255, 255, 255, 0.1) !important; 
+    background: rgba(255, 255, 255, 0.95) !important; 
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 } 
 
@@ -69,7 +72,7 @@ body {
     gap: 12px;
     text-decoration: none;
     color: var(--primary) !important;
-    transition: transform .3s ease;
+    transition: transform 0.2s ease;
 }
 
 .navbar-brand:hover {
@@ -101,29 +104,28 @@ body {
     margin-left: 18px;
     padding: 8px 16px;
     border-radius: 30px;
-    transition: all .3s ease;
+    transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .nav-link:hover,
 .nav-link.active {
     color: var(--primary) !important;
-    background: rgba(255, 255, 255, .35);
-    backdrop-filter: blur(10px);
-}
-
-.navbar-collapse {
-    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.5);
 }
 
 @media (max-width: 991px) {
     .navbar-collapse {
         margin-top: 12px;
         padding: 15px;
-        background: rgba(255, 255, 255, .18);
-        backdrop-filter: blur(25px);
-        -webkit-backdrop-filter: blur(25px);
-        border: 1px solid rgba(255, 255, 255, .30);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.92);
+        
+        /* Drastically reduced blur radius for smooth mobile rendering */
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+
+        border: 1px solid rgba(255, 255, 255, 0.30);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     }
 
     .nav-link {

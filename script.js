@@ -720,7 +720,7 @@ View Details
 
 function getDetailsPage(id) {
     switch (String(id)) {
-        case "0":
+        case "1":
             return "try.html";
 
         default:

@@ -3,6 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: ["main"] # Change to "master" if your default branch is master
+  workflow_dispatch: # Lets you run it manually from Actions tab
 
 # Grant permissions to deploy to Pages
 permissions:

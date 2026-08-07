@@ -720,8 +720,8 @@ View Details
 
 function getDetailsPage(id) {
     switch (String(id)) {
-        case "0":
-            return "wishlist.html";
+        case "1":
+            return "try.html";
 
         default:
             return `details.html?id=${id}`;

@@ -30,10 +30,10 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v3.0.0 # or @v4 if using latest release tags
         with:
           path: '.' # Change to 'dist' or 'build' if using React, Vite, etc.
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v4.0.5

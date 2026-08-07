@@ -691,8 +691,7 @@ ${amenities}
 
 <a
 
-href="details.html?id=${home.id}"
-
+href="${getDetailsPage(home.id)}"
 class="btn btn-view">
 
 View Details
@@ -712,6 +711,24 @@ View Details
     });
 
 }
+
+/*particular homestay
+<a  class="btn btn-view">
+   href="details.html?id=${home.id}"
+    View Details
+</a>*/
+
+function getDetailsPage(id) {
+    switch (String(id)) {
+        case "1":
+            return "wishlist.html";
+
+        default:
+            return `details.html?id=${id}`;
+    }
+}
+
+
 
 
 /* ======================================

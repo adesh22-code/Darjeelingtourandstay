@@ -207,13 +207,13 @@ body {
 }
 
 .hero h1 {
-    font-size: 56px;
+    font-size: 40px;
     font-weight: 700;
     line-height: 1.2;
 }
 
 .hero p {
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .search-box {

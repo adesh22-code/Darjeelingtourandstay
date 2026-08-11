@@ -36,45 +36,50 @@ async function loadHomestay() {
             return;
         }
 
-        /* ==========================================
-           Fetch JSON directly from Apps Script
-        ========================================== */
-        const response = await fetch(DATA_URL, {
-            method: "GET",
-            cache: "no-store"
-        });
+        let homes = null;
+        const cache = localStorage.getItem("homestay_cache");
+        const cacheTime = localStorage.getItem("homestay_cache_time");
+        const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
 
-        if (!response.ok) {
-            throw new Error(`HTTP error: ${response.status}`);
+        /* ⚡ INSTANT LOAD: Check if cache exists and is fresh */
+        if (cache && cacheTime && (Date.now() - Number(cacheTime) < CACHE_DURATION)) {
+            try {
+                homes = JSON.parse(cache);
+            } catch (e) {
+                localStorage.removeItem("homestay_cache");
+            }
         }
 
-        const homes = await response.json();
-        console.log("JSON data received:", homes);
+        /* 🐢 FALLBACK: Only fetch from Apps Script if cache is missing */
+        if (!homes) {
+            console.log("No cache found. Fetching from Apps Script...");
+            const response = await fetch(DATA_URL);
 
-        if (!Array.isArray(homes)) {
-            throw new Error("JSON API did not return an array");
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+
+            homes = await response.json();
+
+            if (!Array.isArray(homes)) {
+                throw new Error("JSON API did not return an array");
+            }
+
+            // Save to localStorage for instant loads on subsequent clicks
+            localStorage.setItem("homestay_cache", JSON.stringify(homes));
+            localStorage.setItem("homestay_cache_time", Date.now().toString());
         }
 
-        /* ==========================================
-           Find requested homestay
-        ========================================== */
+        /* Find requested homestay */
         homestay = homes.find(
             home => String(home.id).trim() === String(id).trim()
         );
 
-        console.log("Selected homestay:", homestay);
-
-        /* ==========================================
-           Not found
-        ========================================== */
         if (!homestay) {
             showNotFound();
             return;
         }
 
-        /* ==========================================
-           Display
-        ========================================== */
         displayHomestay();
 
     } catch (error) {
@@ -82,6 +87,8 @@ async function loadHomestay() {
         showError("Unable to load homestay details. Please refresh the page.");
     }
 }
+        
+
 
 /* ===========================================================
    NOT FOUND

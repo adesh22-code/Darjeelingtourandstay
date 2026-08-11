@@ -16,10 +16,9 @@ const CACHE_DURATION =
 
 30 * 60 * 1000;
 
-/*const SHEET_URL =
+const SHEET_URL =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWXIyW8Zk4YXmIK4Bl1g2cMIIWBEOaaIrfSM2zaWsTr63lmc0Td8lDm2kY11Ap2w/pub?gid=942226858&single=true&output=csv";
-*/
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbxQC1tyK7OMEb2CmIVXtDhecjBrIw49LonT01jNehB-7VfM5cNa1ph7fzWxSkEqpRyxdQ/exec";
+
 /*const DATA_URL = "data.json";*/
 /* ======================================
    Global Variables
@@ -116,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
    Load Google Sheet
 ====================================== */
 
-/*async function loadHomestays(){
+async function loadHomestays(){
 
 showLoading();
 
@@ -169,40 +168,9 @@ Unable to load Google Sheet.
 
 }
 
-*/
 
-async function loadHomestays() {
-    showLoading();
 
-    try {
-        const response = await fetch(SHEET_URL);
-        
-        // Directly parse the incoming JSON data from Google Apps Script
-        homestays = await response.json();
 
-        filteredHomestays = [...homestays];
-
-        populateLocations();
-
-        applyFilters();
-
-        hideLoading();
-
-    } catch (error) {
-
-        console.error("Error loading JSON data:", error);
-
-        hideLoading();
-
-        container.innerHTML = `
-            <div class="col-12">
-                <div class="alert alert-danger">
-                    Unable to load homestay data.
-                </div>
-            </div>
-        `;
-    }
-}
 
 
 /* ======================================
@@ -957,7 +925,6 @@ document.getElementById("imageModal")
 
 
 
-/* Optional cache loader 
 
 async function loadWithCache() {
     showLoading();
@@ -1002,52 +969,9 @@ async function loadWithCache() {
     } finally {
         hideLoading();
     }
-}*/
-
-// Example updated loadWithCache function
-async function loadWithCache() {
-    showLoading();
-    let loadedFromCache = false;
-
-    try {
-        const cache = localStorage.getItem(CACHE_KEY);
-        const time = localStorage.getItem(CACHE_TIME);
-
-        if (cache && time && (Date.now() - Number(time) < CACHE_DURATION)) {
-            try {
-                const parsedData = JSON.parse(cache);
-                if (Array.isArray(parsedData) && parsedData.length > 0) {
-                    homestays = parsedData;
-                    loadedFromCache = true;
-                }
-            } catch (e) {
-                localStorage.removeItem(CACHE_KEY);
-            }
-        }
-
-        if (!loadedFromCache) {
-            const response = await fetch(SHEET_URL);
-            homestays = await response.json(); // Direct JSON parse
-            
-            localStorage.setItem(CACHE_KEY, JSON.stringify(homestays));
-            localStorage.setItem(CACHE_TIME, Date.now().toString());
-        }
-
-        filteredHomestays = [...homestays];
-        populateLocations();
-        applyFilters();
-    } catch (error) {
-        console.error("Loading error:", error);
-        container.innerHTML = `
-            <div class="col-12 text-center py-5">
-                <div class="alert alert-danger">
-                    Unable to load homestay data. Please refresh.
-                </div>
-            </div>`;
-    } finally {
-        hideLoading();
-    }
 }
+
+
 
 /* nav bar scrolling*/
 window.addEventListener("scroll", function () {

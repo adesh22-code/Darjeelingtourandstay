@@ -16,9 +16,10 @@ const CACHE_DURATION =
 
 30 * 60 * 1000;
 
-const SHEET_URL =
+/*const SHEET_URL =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWXIyW8Zk4YXmIK4Bl1g2cMIIWBEOaaIrfSM2zaWsTr63lmc0Td8lDm2kY11Ap2w/pub?gid=942226858&single=true&output=csv";
-
+*/
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbxQC1tyK7OMEb2CmIVXtDhecjBrIw49LonT01jNehB-7VfM5cNa1ph7fzWxSkEqpRyxdQ/exec";
 /*const DATA_URL = "data.json";*/
 /* ======================================
    Global Variables
@@ -115,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
    Load Google Sheet
 ====================================== */
 
-async function loadHomestays(){
+/*async function loadHomestays(){
 
 showLoading();
 
@@ -130,9 +131,7 @@ await response.text();
 homestays=
 csvToObjects(csv);
 
-/*const response = await fetch(DATA_URL);
 
-const homes = await response.json();*/
 
 filteredHomestays=
 [...homestays];
@@ -170,7 +169,7 @@ Unable to load Google Sheet.
 
 }
 
-
+*/
 /* ======================================
    CSV Parser
 ====================================== */
@@ -923,7 +922,7 @@ document.getElementById("imageModal")
 
 
 
-/* Optional cache loader */
+/* Optional cache loader 
 
 async function loadWithCache() {
     showLoading();
@@ -968,7 +967,7 @@ async function loadWithCache() {
     } finally {
         hideLoading();
     }
-}
+}*/
 
 /* nav bar scrolling*/
 window.addEventListener("scroll", function () {

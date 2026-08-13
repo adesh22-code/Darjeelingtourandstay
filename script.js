@@ -3,9 +3,9 @@
    SCRIPT.JS - PHASE 2 SMART JSON CACHE
 ================================================== */
 
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbwDr5oX8tcgMuXPbUZphku7qNEMfm_KcIpiwwFQdR_UQ7P0DzW4x2lFs9S4H4TnHvN7/exec";
-
-/*const SHEET_URL="data.json";*/
+/*const SHEET_URL = "https://script.google.com/macros/s/AKfycbwDr5oX8tcgMuXPbUZphku7qNEMfm_KcIpiwwFQdR_UQ7P0DzW4x2lFs9S4H4TnHvN7/exec";
+*/
+const SHEET_URL="data.json";
 const CACHE_KEY = "homestay_cache_v2";
 const CACHE_TIME = "homestay_cache_time";
 const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes

@@ -7,9 +7,9 @@
    JSON API
 =========================================================== */
 
-const DATA_URL = "https://script.google.com/macros/s/AKfycbwDr5oX8tcgMuXPbUZphku7qNEMfm_KcIpiwwFQdR_UQ7P0DzW4x2lFs9S4H4TnHvN7/exec";
-
-/*const DATA_URL="data.json";*/
+/*const DATA_URL = "https://script.google.com/macros/s/AKfycbwDr5oX8tcgMuXPbUZphku7qNEMfm_KcIpiwwFQdR_UQ7P0DzW4x2lFs9S4H4TnHvN7/exec";
+*/
+const DATA_URL="data.json";
 /* ===========================================================
    GLOBAL VARIABLES
 =========================================================== */

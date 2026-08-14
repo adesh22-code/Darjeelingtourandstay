@@ -37,19 +37,41 @@ async function loadHomestay() {
             return;
         }
 
-        let homes = null;
+       /* let homes = null;
         const cache = localStorage.getItem("homestay_cache");
         const cacheTime = localStorage.getItem("homestay_cache_time");
         const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
 
-        /* ⚡ INSTANT LOAD: Check if cache exists and is fresh */
+         ⚡ INSTANT LOAD: Check if cache exists and is fresh 
         if (cache && cacheTime && (Date.now() - Number(cacheTime) < CACHE_DURATION)) {
             try {
                 homes = JSON.parse(cache);
             } catch (e) {
                 localStorage.removeItem("homestay_cache");
             }
-        }
+        }*/
+
+       // Cache config - use same key in both files
+const CACHE_KEY = "homestay_cache_v2"; 
+const CACHE_TIME_KEY = "homestay_cache_time_v2";
+const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
+
+let homes = null;
+
+/* ⚡ INSTANT LOAD: Check if cache exists and is fresh */
+const cachedData = localStorage.getItem(CACHE_KEY);
+const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+
+if (cachedData && cachedTime && (Date.now() - Number(cachedTime) < CACHE_DURATION)) {
+    try {
+        homes = JSON.parse(cachedData);
+        console.log("Loaded homes from cache");
+    } catch (e) {
+        console.error("Cache parse error", e);
+        localStorage.removeItem(CACHE_KEY);
+        localStorage.removeItem(CACHE_TIME_KEY);
+    }
+}
 
         /* 🐢 FALLBACK: Only fetch from Apps Script if cache is missing */
         if (!homes) {

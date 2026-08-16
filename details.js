@@ -1,418 +1,1514 @@
+```javascript
 /* ===========================================================
    DARJEELING HOMESTAY DIRECTORY
-   DETAILS.JS - FAULT-TOLERANT & CACHE-ALIGNED VERSION
+   DETAILS.JS - PHASE 2 SMART JSON CACHE
 =========================================================== */
+
 
 /* ===========================================================
-   CONFIG & CACHE
+   JSON DATA SOURCE
 =========================================================== */
 
-// Change to your Google Apps Script Web App URL if fetching dynamically
+/*
+const DATA_URL =
+    "https://script.google.com/macros/s/AKfycbwDr5oX8tcgMuXPbUZphku7qNEMfm_KcIpiwwFQdR_UQ7P0DzW4x2lFs9S4H4TnHvN7/exec";
+*/
+
 const DATA_URL = "data.json";
 
-// Standardized Cache Keys matching script.js
+
+/* ===========================================================
+   CACHE CONFIGURATION
+   MUST MATCH SCRIPT.JS
+=========================================================== */
+
 const CACHE_KEY = "homestay_cache_v2";
 const CACHE_TIME_KEY = "homestay_cache_time";
 const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
+
 
 /* ===========================================================
    GLOBAL VARIABLES
 =========================================================== */
 
 let homestay = null;
-let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-const id = new URLSearchParams(window.location.search).get("id");
+
+let wishlist = JSON.parse(
+    localStorage.getItem("wishlist")
+) || [];
+
+const id = new URLSearchParams(
+    window.location.search
+).get("id");
+
 
 /* ===========================================================
-   START & LISTENERS
+   START
 =========================================================== */
 
-document.addEventListener("DOMContentLoaded", loadHomestay);
+document.addEventListener(
+    "DOMContentLoaded",
+    loadHomestay
+);
 
-// Synchronize wishlist state across multiple open tabs
-window.addEventListener("storage", (e) => {
-    if (e.key === "wishlist") {
-        try {
-            wishlist = JSON.parse(e.newValue) || [];
-            updateWishlistButton();
-        } catch (err) {
-            console.error("Wishlist sync error:", err);
-        }
-    }
-});
 
 /* ===========================================================
-   HELPER: FLEXIBLE CASE-INSENSITIVE ID LOOKUP
-=========================================================== */
-
-function findHomestayById(homesList, targetId) {
-    if (!homesList || !Array.isArray(homesList) || targetId === null || targetId === undefined) {
-        return null;
-    }
-
-    const cleanTargetId = String(targetId).trim().toLowerCase();
-
-    return homesList.find(home => {
-        if (!home) return false;
-        
-        // Checks all common property key variations coming from Google Sheets / JSON
-        const rawId = home.id ?? home.ID ?? home.Id ?? home["id "] ?? home["ID "] ?? home["sl_no"] ?? home["Sl No"];
-        
-        if (rawId === undefined || rawId === null) return false;
-        
-        return String(rawId).trim().toLowerCase() === cleanTargetId;
-    });
-}
-
-/* ===========================================================
-   LOAD HOMESTAY FROM CACHE OR API
+   LOAD HOMESTAY
+   PHASE 2 SMART CACHE
 =========================================================== */
 
 async function loadHomestay() {
+
     try {
+
         console.log("Loading homestay ID:", id);
 
+        /* ==============================================
+           CHECK ID
+        ============================================== */
+
         if (!id) {
-            showNotFound("No Homestay ID specified in the URL.");
+            showNotFound();
             return;
         }
+
+
+        /* ==============================================
+           1. TRY LOCAL CACHE FIRST
+        ============================================== */
 
         let homes = null;
 
-        // 1. Try reading from cache first
-        const cachedData = localStorage.getItem(CACHE_KEY);
-        const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+        const cachedData = localStorage.getItem(
+            CACHE_KEY
+        );
 
-        if (cachedData && cachedTime && (Date.now() - Number(cachedTime) < CACHE_DURATION)) {
+        const cachedTime = Number(
+            localStorage.getItem(CACHE_TIME_KEY) || 0
+        );
+
+
+        if (cachedData) {
+
             try {
-                homes = JSON.parse(cachedData);
-                console.log("Loaded homes from local cache.");
-            } catch (e) {
-                console.warn("Cache parse failed, clearing cache:", e);
-                localStorage.removeItem(CACHE_KEY);
-                localStorage.removeItem(CACHE_TIME_KEY);
+
+                const parsed = JSON.parse(
+                    cachedData
+                );
+
+                if (
+                    Array.isArray(parsed) &&
+                    parsed.length > 0
+                ) {
+
+                    homes = parsed;
+
+                    console.log(
+                        "Details: Loaded homestays from cache:",
+                        homes.length
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.warn(
+                    "Details: Invalid cache. Clearing cache."
+                );
+
+                localStorage.removeItem(
+                    CACHE_KEY
+                );
+
+                localStorage.removeItem(
+                    CACHE_TIME_KEY
+                );
+
+                homes = null;
             }
         }
 
-        // 2. Fallback fetch if cache is missing or expired
-        if (!homes || !Array.isArray(homes)) {
-            console.log("Fetching fresh homestay data...");
-            const response = await fetch(DATA_URL);
 
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: Failed to fetch ${DATA_URL}`);
+        /* ==============================================
+           2. FIND HOMESTAY FROM CACHE
+        ============================================== */
+
+        if (homes) {
+
+            homestay = homes.find(
+                home =>
+                    String(home.id).trim() ===
+                    String(id).trim()
+            );
+
+            if (homestay) {
+
+                /*
+                   Render immediately.
+
+                   This is important:
+                   The details page does NOT wait for
+                   data.json when usable cached data exists.
+                */
+
+                displayHomestay();
+
+                console.log(
+                    "Details: Homestay loaded instantly from cache."
+                );
+
+            } else {
+
+                /*
+                   Requested ID does not exist in cached
+                   data.
+
+                   We must fetch fresh data because the
+                   cache might be outdated.
+                */
+
+                console.log(
+                    "Details: ID not found in cache. Fetching fresh data..."
+                );
+
+                await fetchFreshData();
+
+                return;
             }
-
-            homes = await response.json();
-
-            if (!Array.isArray(homes)) {
-                throw new Error("JSON data returned is not an array");
-            }
-
-            localStorage.setItem(CACHE_KEY, JSON.stringify(homes));
-            localStorage.setItem(CACHE_TIME_KEY, Date.now().toString());
         }
 
-        // 3. Flexible lookup for the target property
-        homestay = findHomestayById(homes, id);
 
-        if (!homestay) {
-            console.warn(`Homestay with ID '${id}' not found in dataset:`, homes);
-            showNotFound(`Homestay with ID "${escapeHtml(id)}" could not be located.`);
+        /* ==============================================
+           3. CHECK CACHE AGE
+        ============================================== */
+
+        const isExpired =
+            !cachedTime ||
+            (Date.now() - cachedTime > CACHE_DURATION);
+
+
+        /* ==============================================
+           4. NO CACHE
+           FETCH DATA BEFORE DISPLAY
+        ============================================== */
+
+        if (!homes) {
+
+            console.log(
+                "Details: No cache found. Fetching data.json..."
+            );
+
+            await fetchFreshData();
+
             return;
         }
 
-        // Hide loader if present
-        const loader = document.getElementById("loading");
-        if (loader) loader.style.display = "none";
 
-        // Display property details
-        displayHomestay();
+        /* ==============================================
+           5. CACHE EXISTS BUT IS EXPIRED
+           REFRESH IN BACKGROUND
+        ============================================== */
+
+        if (isExpired) {
+
+            console.log(
+                "Details: Cache expired. Refreshing data.json in background..."
+            );
+
+            /*
+               Do NOT wait.
+
+               The cached homestay is already visible.
+            */
+
+            fetchFreshData(false);
+
+        }
 
     } catch (error) {
-        console.error("Error loading homestay:", error);
-        showError("Unable to load homestay details. Please refresh the page.");
+
+        console.error(
+            "Error loading homestay:",
+            error
+        );
+
+        showError(
+            "Unable to load homestay details. Please refresh the page."
+        );
     }
 }
+
 
 /* ===========================================================
-   UI ERROR & NOT FOUND HANDLERS (SAFE / NON-DESTRUCTIVE)
+   FETCH FRESH JSON DATA
 =========================================================== */
 
-function showNotFound(msg = "Homestay not found.") {
-    const loader = document.getElementById("loading");
-    if (loader) {
-        loader.innerHTML = `
-            <div class="container py-5 text-center">
-                <div class="alert alert-warning shadow-sm rounded-4 p-4">
-                    <i class="fa-solid fa-triangle-exclamation fs-1 text-warning mb-3"></i>
-                    <h4 class="fw-bold">Homestay Not Found</h4>
-                    <p class="text-muted mb-3">${msg}</p>
-                    <a href="index.html" class="btn btn-success">Return to Directory</a>
-                </div>
-            </div>
-        `;
-        loader.style.display = "block";
-    } else {
-        alert(msg);
+async function fetchFreshData(showErrorUI = true) {
+
+    try {
+
+        console.log(
+            "Details: Fetching fresh data from:",
+            DATA_URL
+        );
+
+
+        /* ==============================================
+           FETCH
+        ============================================== */
+
+        const response = await fetch(
+            DATA_URL,
+            {
+                method: "GET",
+                cache: "no-store"
+            }
+        );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `HTTP error: ${response.status}`
+            );
+        }
+
+
+        /* ==============================================
+           PARSE JSON
+        ============================================== */
+
+        const freshData =
+            await response.json();
+
+
+        if (!Array.isArray(freshData)) {
+
+            throw new Error(
+                "JSON API did not return an array"
+            );
+        }
+
+
+        /* ==============================================
+           SAVE FRESH DATA
+           SAME CACHE AS SCRIPT.JS
+        ============================================== */
+
+        localStorage.setItem(
+            CACHE_KEY,
+            JSON.stringify(freshData)
+        );
+
+        localStorage.setItem(
+            CACHE_TIME_KEY,
+            Date.now().toString()
+        );
+
+
+        console.log(
+            `Details: Fresh JSON data loaded: ${freshData.length} listings`
+        );
+
+
+        /* ==============================================
+           FIND REQUESTED HOMESTAY
+        ============================================== */
+
+        homestay = freshData.find(
+            home =>
+                String(home.id).trim() ===
+                String(id).trim()
+        );
+
+
+        /* ==============================================
+           HOMESTAY NOT FOUND
+        ============================================== */
+
+        if (!homestay) {
+
+            showNotFound();
+
+            return;
+        }
+
+
+        /* ==============================================
+           DISPLAY HOMESTAY
+        ============================================== */
+
+        displayHomestay();
+
+
+    } catch (error) {
+
+        console.error(
+            "Details fresh-data fetch error:",
+            error
+        );
+
+
+        /*
+           If cached data was already displayed,
+           DO NOT replace it with an error.
+
+           Only show error when there was no usable
+           cached homestay.
+        */
+
+        if (
+            showErrorUI &&
+            !homestay
+        ) {
+
+            showError(
+                "Unable to load homestay details. Please refresh the page."
+            );
+        }
     }
 }
 
-function showError(message) {
-    const loader = document.getElementById("loading");
+
+/* ===========================================================
+   MANUAL DATA REFRESH
+=========================================================== */
+
+async function refreshHomestayData() {
+
+    console.log(
+        "Details: Manual data refresh requested."
+    );
+
+
+    /*
+       Remove only website data cache.
+
+       Wishlist remains untouched.
+    */
+
+    localStorage.removeItem(
+        CACHE_KEY
+    );
+
+    localStorage.removeItem(
+        CACHE_TIME_KEY
+    );
+
+
+    /*
+       Show loading state if available.
+    */
+
+    const loader =
+        document.getElementById("loading");
+
     if (loader) {
-        loader.innerHTML = `
-            <div class="alert alert-danger m-3 p-3">
-                <i class="fa-solid fa-circle-exclamation me-2"></i> ${message}
-            </div>
-        `;
         loader.style.display = "block";
-    } else {
-        alert(message);
+    }
+
+
+    await fetchFreshData(true);
+
+
+    if (loader) {
+        loader.style.display = "none";
     }
 }
+
+
+/*
+   Make available globally.
+
+   Can be called from:
+   - Browser console
+   - Admin button
+   - Future refresh button
+*/
+
+window.refreshHomestayData =
+    refreshHomestayData;
+
+
+/* ===========================================================
+   NOT FOUND
+=========================================================== */
+
+function showNotFound() {
+
+    document.body.innerHTML = `
+
+        <div class="container py-5 text-center">
+
+            <div class="alert alert-warning shadow-sm rounded-4 p-5">
+
+                <i class="fa-solid fa-triangle-exclamation fs-1 text-warning mb-3"></i>
+
+                <h3 class="fw-bold">
+                    Homestay Not Found
+                </h3>
+
+                <p class="text-muted">
+                    The requested property could not be located.
+                </p>
+
+                <a
+                    href="index.html"
+                    class="btn btn-success mt-2"
+                >
+                    Return to Directory
+                </a>
+
+            </div>
+
+        </div>
+
+    `;
+}
+
+
+/* ===========================================================
+   ERROR
+=========================================================== */
+
+function showError(message) {
+
+    const loader =
+        document.getElementById("loading");
+
+
+    if (loader) {
+
+        loader.innerHTML = `
+
+            <div class="alert alert-danger">
+
+                ${message}
+
+            </div>
+
+        `;
+
+        loader.style.display = "block";
+    }
+}
+
 
 /* ===========================================================
    DISPLAY HOMESTAY
 =========================================================== */
 
 function displayHomestay() {
-    if (!homestay) return;
 
-    // Helper to safely get property fields regardless of header casing
-    const getField = (keys, fallback = "") => {
-        for (const k of keys) {
-            if (homestay[k] !== undefined && homestay[k] !== null) return homestay[k];
-        }
-        return fallback;
-    };
+    /* ==========================================
+       PAGE TITLE
+    ========================================== */
 
-    const nameVal = getField(["name", "Name", "title", "Title"], "Unnamed Homestay");
-    const locationVal = getField(["location", "Location", "place", "Place"], "Location Not Specified");
-    const imageVal = getField(["image", "Image", "photo", "Photo"], "https://placehold.co/1200x700?text=No+Image+Available");
-    const priceVal = getField(["price", "Price", "rate", "Rate"]);
-    const descVal = getField(["description", "Description", "desc", "Desc"], "No description provided.");
-    const amenitiesVal = getField(["amenities", "Amenities", "facilities", "Facilities"]);
-    const phoneVal = getField(["phone", "Phone", "mobile", "Mobile", "contact", "Contact"]);
-    const whatsappVal = getField(["whatsapp", "WhatsApp", "Whatsapp"]);
-    const mapVal = getField(["googleMap", "GoogleMap", "google_map", "map", "Map"]);
-    const websiteVal = getField(["website", "Website", "site", "Site"]);
+    document.title =
+        `${homestay.name || "Details"} | Darjeeling Homestay`;
 
-    // Title
-    document.title = `${nameVal} | Darjeeling Homestay`;
 
-    // Hero Image
-    const heroImage = document.getElementById("heroImage");
-    if (heroImage) heroImage.src = imageVal;
+    /* ==========================================
+       HERO IMAGE
+    ========================================== */
 
-    // Names
-    const homeName = document.getElementById("homeName");
-    if (homeName) homeName.textContent = nameVal;
+    const heroImage =
+        document.getElementById("heroImage");
 
-    const detailName = document.getElementById("detailName");
-    if (detailName) detailName.textContent = nameVal;
+    if (heroImage) {
 
-    // Location
-    const homeLocation = document.getElementById("homeLocation");
+        const image =
+            homestay.image &&
+            homestay.image.trim() !== ""
+
+                ? homestay.image.split("|")[0].trim()
+
+                : "https://placehold.co/1200x700?text=No+Image+Available";
+
+
+        heroImage.src = image;
+
+        heroImage.onerror = function () {
+
+            this.src =
+                "https://placehold.co/1200x700?text=No+Image+Available";
+
+        };
+    }
+
+
+    /* ==========================================
+       HERO NAME
+    ========================================== */
+
+    const homeName =
+        document.getElementById("homeName");
+
+    if (homeName) {
+
+        homeName.textContent =
+            homestay.name ||
+            "Unnamed Homestay";
+    }
+
+
+    /* ==========================================
+       HERO LOCATION
+    ========================================== */
+
+    const homeLocation =
+        document.getElementById("homeLocation");
+
     if (homeLocation) {
-        homeLocation.innerHTML = `<i class="fa-solid fa-location-dot text-danger me-1"></i> ${escapeHtml(locationVal)}`;
+
+        homeLocation.innerHTML = `
+
+            <i class="fa-solid fa-location-dot text-danger me-1"></i>
+
+            ${homestay.location || "Location Not Specified"}
+
+        `;
     }
 
-    const detailLocation = document.getElementById("detailLocation");
+
+    /* ==========================================
+       DETAILS NAME
+    ========================================== */
+
+    const detailName =
+        document.getElementById("detailName");
+
+    if (detailName) {
+
+        detailName.textContent =
+            homestay.name || "";
+    }
+
+
+    /* ==========================================
+       DETAILS LOCATION
+    ========================================== */
+
+    const detailLocation =
+        document.getElementById("detailLocation");
+
     if (detailLocation) {
-        detailLocation.innerHTML = `<i class="fa-solid fa-location-dot text-muted me-1"></i> ${escapeHtml(locationVal)}`;
+
+        detailLocation.innerHTML = `
+
+            <i class="fa-solid fa-location-dot text-muted me-1"></i>
+
+            ${homestay.location || ""}
+
+        `;
     }
 
-    // Price
-    const detailPrice = document.getElementById("detailPrice");
+
+    /* ==========================================
+       PRICE
+    ========================================== */
+
+    const formattedPrice =
+        homestay.price
+            ? `₹ ${homestay.price}`
+            : "Price on Request";
+
+
+    const detailPrice =
+        document.getElementById("detailPrice");
+
     if (detailPrice) {
-        detailPrice.textContent = priceVal ? `₹${priceVal}` : "N/A";
+
+        detailPrice.textContent =
+            formattedPrice;
     }
 
-    // Description
-    const detailDescription = document.getElementById("detailDescription");
-    if (detailDescription) {
-        detailDescription.textContent = descVal;
+
+    /* ==========================================
+       MOBILE PRICE
+    ========================================== */
+
+    const mobilePrice =
+        document.getElementById("mobilePrice");
+
+    if (mobilePrice) {
+
+        mobilePrice.textContent =
+            formattedPrice;
     }
 
-    // Amenities
-    const detailAmenities = document.getElementById("detailAmenities");
-    if (detailAmenities) {
-        if (amenitiesVal) {
-            const list = String(amenitiesVal).split(",").map(i => i.trim()).filter(Boolean);
-            if (list.length > 0) {
-                detailAmenities.innerHTML = list.map(item => `<span class="badge bg-light text-dark border me-1 mb-1">${escapeHtml(item)}</span>`).join("");
-            } else {
-                detailAmenities.textContent = "No amenities listed.";
-            }
-        } else {
-            detailAmenities.textContent = "No amenities listed.";
-        }
+
+    /* ==========================================
+       DESCRIPTION
+    ========================================== */
+
+    const description =
+        document.getElementById("detailDescription");
+
+    if (description) {
+
+        description.textContent =
+            homestay.description ||
+            "No description provided for this homestay.";
     }
 
-    // Phone / Call Actions
-    const handleCall = () => {
-        if (phoneVal) {
-            window.location.href = `tel:${phoneVal}`;
-        } else {
-            showToast("Phone number not provided.");
-        }
-    };
-    const callBtn = document.getElementById("callBtn");
-    if (callBtn) callBtn.onclick = handleCall;
-    const mobileCallBtn = document.getElementById("mobileCallBtn");
-    if (mobileCallBtn) mobileCallBtn.onclick = handleCall;
 
-    // WhatsApp Action
-    const whatsappBtn = document.getElementById("whatsappBtn");
-    if (whatsappBtn) {
-        whatsappBtn.onclick = () => {
-            const targetNum = whatsappVal || phoneVal;
-            if (targetNum) {
-                const cleanNumber = String(targetNum).replace(/[^0-9]/g, "");
-                window.open(`https://wa.me/${cleanNumber}`, "_blank");
-            } else {
-                showToast("WhatsApp contact not available.");
-            }
-        };
+    /* ==========================================
+       SCENERY
+    ========================================== */
+
+    const scenery =
+        document.getElementById("detailScenery");
+
+    if (scenery) {
+
+        scenery.textContent =
+            homestay.scenery ||
+            "No specific scenic views detailed for this location.";
     }
 
-    // Google Map Action
-    const mapBtn = document.getElementById("mapBtn");
-    if (mapBtn) {
-        mapBtn.onclick = () => {
-            if (mapVal) {
-                window.open(mapVal, "_blank");
-            } else {
-                showToast("Map link not available.");
-            }
-        };
-    }
 
-    // Website Action
-    const websiteBtn = document.getElementById("websiteBtn");
-    if (websiteBtn) {
-        const siteUrl = String(websiteVal).trim();
-        if (siteUrl && siteUrl !== "#") {
-            websiteBtn.onclick = () => window.open(siteUrl, "_blank");
-        } else {
-            websiteBtn.style.display = "none";
-        }
-    }
+    /* ==========================================
+       REMAINING SECTIONS
+    ========================================== */
 
-    // Form & Wishlist Initializers
-    setupEnquiryForm(phoneVal, nameVal);
+    renderAmenities();
+
+    setupButtons();
+
+    createGallery();
+
     updateWishlistButton();
+
+    setupEnquiryForm();
+
+
+    console.log(
+        "Homestay details rendered successfully."
+    );
 }
 
+
 /* ===========================================================
-   ENQUIRY FORM HANDLER
+   AMENITIES
 =========================================================== */
 
-function setupEnquiryForm(ownerPhoneRaw, homestayName) {
-    const enquiryForm = document.getElementById("enquiryForm");
-    if (!enquiryForm) return;
+function renderAmenities() {
 
-    enquiryForm.onsubmit = function (e) {
-        e.preventDefault();
+    const container =
+        document.getElementById("detailAmenities");
 
-        const ownerPhone = ownerPhoneRaw ? String(ownerPhoneRaw).replace(/[^0-9+]/g, "") : "";
-        if (!ownerPhone) {
-            showToast("Owner phone number is not available.");
-            return;
-        }
 
-        const name = document.getElementById("enquiryName")?.value || "";
-        const phone = document.getElementById("enquiryPhone")?.value || "";
-        const checkIn = document.getElementById("enquiryCheckIn")?.value || "";
-        const checkOut = document.getElementById("enquiryCheckOut")?.value || "";
+    if (!container) return;
 
-        const message = `Hello! Enquiry for ${homestayName}:\n` +
-                        `Name: ${name}\n` +
-                        `Phone: ${phone}\n` +
-                        `Check-in: ${checkIn}\n` +
-                        `Check-out: ${checkOut}`;
 
-        window.open(`https://wa.me/${ownerPhone}?text=${encodeURIComponent(message)}`, "_blank");
-    };
+    container.innerHTML = "";
+
+
+    if (!homestay.amenities) {
+
+        container.innerHTML = `
+
+            <span class="text-muted small">
+
+                No amenities listed for this stay.
+
+            </span>
+
+        `;
+
+        return;
+    }
+
+
+    homestay.amenities
+        .split(",")
+        .forEach(item => {
+
+            if (item.trim()) {
+
+                container.innerHTML += `
+
+                    <span class="amenity-chip">
+
+                        <i class="fa-solid fa-circle-check text-success"></i>
+
+                        ${item.trim()}
+
+                    </span>
+
+                `;
+            }
+
+        });
 }
 
+
 /* ===========================================================
-   WISHLIST HANDLERS
+   BUTTONS
+=========================================================== */
+
+function setupButtons() {
+
+    /* ==========================================
+       CALL
+    ========================================== */
+
+    const handleCall = () => {
+
+        if (
+            homestay &&
+            homestay.phone
+        ) {
+
+            window.location.href =
+                `tel:${homestay.phone}`;
+
+        } else {
+
+            showToast(
+                "Phone number not provided."
+            );
+        }
+    };
+
+
+    const callBtn =
+        document.getElementById("callBtn");
+
+    if (callBtn) {
+
+        callBtn.onclick =
+            handleCall;
+    }
+
+
+    const mobileCallBtn =
+        document.getElementById("mobileCallBtn");
+
+    if (mobileCallBtn) {
+
+        mobileCallBtn.onclick =
+            handleCall;
+    }
+
+
+    /* ==========================================
+       WHATSAPP
+    ========================================== */
+
+    const whatsappBtn =
+        document.getElementById("whatsappBtn");
+
+    if (whatsappBtn) {
+
+        whatsappBtn.onclick = () => {
+
+            if (
+                homestay &&
+                homestay.whatsapp
+            ) {
+
+                const cleanNumber =
+                    homestay.whatsapp.replace(
+                        /[^0-9]/g,
+                        ""
+                    );
+
+                window.open(
+                    `https://wa.me/${cleanNumber}`,
+                    "_blank"
+                );
+
+            } else {
+
+                showToast(
+                    "WhatsApp contact not available."
+                );
+            }
+        };
+    }
+
+
+    /* ==========================================
+       GOOGLE MAP
+    ========================================== */
+
+    const mapBtn =
+        document.getElementById("mapBtn");
+
+    if (mapBtn) {
+
+        mapBtn.onclick = () => {
+
+            if (
+                homestay &&
+                homestay.googleMap
+            ) {
+
+                window.open(
+                    homestay.googleMap,
+                    "_blank"
+                );
+
+            } else {
+
+                showToast(
+                    "Map direction link not available."
+                );
+            }
+        };
+    }
+
+
+    /* ==========================================
+       WEBSITE
+    ========================================== */
+
+    const websiteBtn =
+        document.getElementById("websiteBtn");
+
+    if (websiteBtn) {
+
+        const website =
+            (homestay.website || "").trim();
+
+
+        if (
+            website &&
+            website !== "#"
+        ) {
+
+            websiteBtn.onclick = () => {
+
+                window.open(
+                    website,
+                    "_blank"
+                );
+            };
+
+        } else {
+
+            websiteBtn.style.display =
+                "none";
+        }
+    }
+
+
+    /* ==========================================
+       SHARE
+    ========================================== */
+
+    const handleShare = async (e) => {
+
+        if (e) {
+            e.preventDefault();
+        }
+
+
+        const shareData = {
+
+            title:
+                homestay.name ||
+                document.title,
+
+            text:
+                `🏡 Check out ${homestay.name || "this homestay"} in ${homestay.location || ""}!`,
+
+            url:
+                window.location.href
+        };
+
+
+        if (navigator.share) {
+
+            try {
+
+                await navigator.share(
+                    shareData
+                );
+
+            } catch (err) {
+
+                console.log(
+                    "Share cancelled.",
+                    err
+                );
+            }
+
+        } else {
+
+            try {
+
+                await navigator.clipboard.writeText(
+                    window.location.href
+                );
+
+                showToast(
+                    "Link copied to clipboard!"
+                );
+
+            } catch (err) {
+
+                prompt(
+                    "Copy this link to share:",
+                    window.location.href
+                );
+            }
+        }
+    };
+
+
+    document
+        .querySelectorAll(
+            "#shareBtn, .share-btn"
+        )
+        .forEach(btn => {
+
+            btn.onclick =
+                handleShare;
+        });
+
+
+    /* ==========================================
+       SOCIAL MEDIA
+    ========================================== */
+
+    const socialLinks = [
+
+        {
+            id: "facebookBtn",
+            url: homestay.facebook
+        },
+
+        {
+            id: "instagramBtn",
+            url: homestay.instagram
+        },
+
+        {
+            id: "youtubeBtn",
+            url: homestay.youtube
+        }
+
+    ];
+
+
+    let hasSocials = false;
+
+
+    socialLinks.forEach(item => {
+
+        const btn =
+            document.getElementById(
+                item.id
+            );
+
+
+        if (!btn) return;
+
+
+        const url =
+            (item.url || "").trim();
+
+
+        if (
+            url &&
+            url !== "#" &&
+            url.toLowerCase() !== "n/a"
+        ) {
+
+            btn.href =
+                url;
+
+            btn.target =
+                "_blank";
+
+            btn.rel =
+                "noopener noreferrer";
+
+            btn.style.display =
+                "inline-flex";
+
+            hasSocials =
+                true;
+
+        } else {
+
+            btn.style.display =
+                "none";
+        }
+    });
+
+
+    if (!hasSocials) {
+
+        const socialCard =
+            document.getElementById(
+                "socialCard"
+            );
+
+
+        if (socialCard) {
+
+            socialCard.style.display =
+                "none";
+        }
+    }
+}
+
+
+/* ===========================================================
+   ENQUIRY FORM
+=========================================================== */
+
+function setupEnquiryForm() {
+
+    const enquiryForm =
+        document.getElementById(
+            "enquiryForm"
+        );
+
+
+    if (!enquiryForm) return;
+
+
+    enquiryForm.onsubmit =
+        function (e) {
+
+            e.preventDefault();
+
+
+            let ownerPhone =
+                homestay &&
+                homestay.phone
+
+                    ? homestay.phone.replace(
+                        /[^0-9+]/g,
+                        ""
+                    )
+
+                    : "";
+
+
+            if (!ownerPhone) {
+
+                showToast(
+                    "Owner phone number is not available."
+                );
+
+                return;
+            }
+
+
+            const name =
+                document.getElementById(
+                    "enquiryName"
+                ).value;
+
+
+            const phone =
+                document.getElementById(
+                    "enquiryPhone"
+                ).value;
+
+
+            const checkIn =
+                document.getElementById(
+                    "enquiryCheckIn"
+                ).value;
+
+
+            const checkOut =
+                document.getElementById(
+                    "enquiryCheckOut"
+                ).value;
+
+
+            const homestayName =
+                homestay
+                    ? homestay.name
+                    : "Homestay";
+
+
+            const message =
+
+                `Hello! Enquiry for ${homestayName}:\n` +
+
+                `Name: ${name}\n` +
+
+                `Phone: ${phone}\n` +
+
+                `Check-in: ${checkIn}\n` +
+
+                `Check-out: ${checkOut}`;
+
+
+            const isIOS =
+                /iPad|iPhone|iPod/.test(
+                    navigator.userAgent
+                ) ||
+
+                (
+                    navigator.platform ===
+                    "MacIntel" &&
+                    navigator.maxTouchPoints > 1
+                );
+
+
+            const separator =
+                isIOS
+                    ? "&"
+                    : "?";
+
+
+            const smsUrl =
+                `sms:${ownerPhone}${separator}body=${encodeURIComponent(message)}`;
+
+
+            const link =
+                document.createElement("a");
+
+
+            link.href =
+                smsUrl;
+
+
+            document.body.appendChild(
+                link
+            );
+
+
+            link.click();
+
+
+            document.body.removeChild(
+                link
+            );
+        };
+}
+
+
+/* ===========================================================
+   GALLERY
+=========================================================== */
+
+function createGallery() {
+
+    const gallery =
+        document.getElementById(
+            "galleryContainer"
+        );
+
+
+    if (!gallery) return;
+
+
+    gallery.innerHTML = "";
+
+
+    let images = [];
+
+
+    if (homestay.gallery) {
+
+        images =
+            homestay.gallery
+
+                .split("|")
+
+                .map(img =>
+                    img.trim()
+                )
+
+                .filter(img =>
+                    img !== ""
+                );
+    }
+
+
+    if (images.length === 0) {
+
+        gallery.innerHTML = `
+
+            <div class="col-12 text-center text-muted py-3">
+
+                <i class="fa-regular fa-image fs-3 mb-2 d-block"></i>
+
+                <p class="mb-0">
+
+                    No extra gallery photos available.
+
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    images.forEach(img => {
+
+        gallery.innerHTML += `
+
+            <div class="col-6 col-md-4">
+
+                <div
+                    class="gallery-item shadow-sm"
+                    onclick="openImage('${img}')"
+                >
+
+                    <img
+                        src="${img}"
+                        class="gallery-image"
+                        alt="Homestay Photo"
+                        loading="lazy"
+                        onerror="this.style.display='none'"
+                    >
+
+                </div>
+
+            </div>
+
+        `;
+    });
+}
+
+
+/* ===========================================================
+   OPEN IMAGE
+=========================================================== */
+
+function openImage(src) {
+
+    const modalImg =
+        document.getElementById(
+            "previewImage"
+        );
+
+
+    const modalElement =
+        document.getElementById(
+            "imageModal"
+        );
+
+
+    if (
+        modalImg &&
+        modalElement
+    ) {
+
+        modalImg.src =
+            src;
+
+
+        const modal =
+            new bootstrap.Modal(
+                modalElement
+            );
+
+
+        modal.show();
+    }
+}
+
+
+/* ===========================================================
+   WISHLIST
 =========================================================== */
 
 function updateWishlistButton() {
+
+    const btn =
+        document.getElementById(
+            "wishlistBtn"
+        );
+
+
+    const mobileBtn =
+        document.getElementById(
+            "mobileWishlistBtn"
+        );
+
+
     if (!homestay) return;
 
-    const rawId = homestay.id ?? homestay.ID ?? homestay.Id ?? homestay["sl_no"] ?? homestay["Sl No"];
-    if (rawId === null || rawId === undefined) return;
 
-    const homestayId = String(rawId);
-    const liked = wishlist.includes(homestayId);
+    const liked =
+        wishlist.includes(
+            String(homestay.id)
+        );
 
-    const btn = document.getElementById("wishlistBtn");
-    const mobileBtn = document.getElementById("mobileWishlistBtn");
 
     if (btn) {
-        btn.innerHTML = liked ? `<i class="fa-solid fa-heart me-1"></i> Saved` : `<i class="fa-regular fa-heart me-1"></i> Save to Wishlist`;
-        btn.className = liked ? "btn btn-danger" : "btn btn-outline-danger";
-        btn.onclick = toggleWishlist;
+
+        btn.innerHTML =
+            liked
+                ? "❤️ Wishlisted"
+                : "🤍 Add Wishlist";
+
+
+        btn.className =
+            liked
+                ? "btn btn-danger"
+                : "btn btn-outline-danger";
+
+
+        btn.onclick =
+            toggleWishlist;
     }
 
+
     if (mobileBtn) {
-        mobileBtn.innerHTML = liked ? "❤️" : "🤍";
-        mobileBtn.onclick = toggleWishlist;
+
+        mobileBtn.innerHTML =
+            liked
+                ? "❤️"
+                : "🤍";
+
+
+        mobileBtn.onclick =
+            toggleWishlist;
     }
 }
 
+
+/* ===========================================================
+   TOGGLE WISHLIST
+=========================================================== */
+
 function toggleWishlist() {
-    if (!homestay) return;
 
-    const rawId = homestay.id ?? homestay.ID ?? homestay.Id ?? homestay["sl_no"] ?? homestay["Sl No"];
-    if (rawId === undefined || rawId === null) return;
+    const homestayId =
+        String(homestay.id);
 
-    const homestayId = String(rawId);
-    const index = wishlist.indexOf(homestayId);
+
+    const index =
+        wishlist.indexOf(
+            homestayId
+        );
+
 
     if (index > -1) {
-        wishlist.splice(index, 1);
-        showToast("Removed from Wishlist");
+
+        wishlist.splice(
+            index,
+            1
+        );
+
+        showToast(
+            "Removed from Wishlist"
+        );
+
     } else {
-        wishlist.push(homestayId);
-        showToast("Added to Wishlist!");
+
+        wishlist.push(
+            homestayId
+        );
+
+        showToast(
+            "Added to Wishlist!"
+        );
     }
 
-    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+
+    localStorage.setItem(
+        "wishlist",
+        JSON.stringify(wishlist)
+    );
+
+
     updateWishlistButton();
 }
 
+
 /* ===========================================================
-   TOAST FEEDBACK (SAFE BOOTSTRAP CHECK)
+   TOAST
 =========================================================== */
 
 function showToast(msg) {
-    const toastEl = document.getElementById("toastMessage");
-    const toastText = document.getElementById("toastText");
 
-    if (toastText) toastText.textContent = msg;
+    const toastEl =
+        document.getElementById(
+            "toastMessage"
+        );
 
-    if (toastEl && typeof bootstrap !== "undefined" && bootstrap?.Toast) {
-        const toast = new bootstrap.Toast(toastEl, { delay: 2500 });
+
+    const toastText =
+        document.getElementById(
+            "toastText"
+        );
+
+
+    if (
+        toastEl &&
+        toastText
+    ) {
+
+        toastText.textContent =
+            msg;
+
+
+        const toast =
+            new bootstrap.Toast(
+                toastEl,
+                {
+                    delay: 2500
+                }
+            );
+
+
         toast.show();
-    } else {
-        alert(msg);
     }
 }
 
+
 /* ===========================================================
-   UTILITIES
+   OPTIONAL HARD REFRESH SHORTCUT
 =========================================================== */
 
-function escapeHtml(str) {
-    return String(str || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
+/*
+   Ctrl + Shift + R
+
+   Forces the website to remove the shared cache
+   and fetch the latest data.json.
+*/
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+
+            event.ctrlKey &&
+
+            event.shiftKey &&
+
+            event.key.toLowerCase() === "r"
+
+        ) {
+
+            event.preventDefault();
+
+            refreshHomestayData();
+        }
+
+    }
+);
+
+
+/* ===========================================================
+   CONSOLE MESSAGE
+=========================================================== */
+
+console.log(
+    "Darjeeling Homestay Directory - Details Phase 2 Smart JSON Cache loaded."
+);
+
+console.log(
+    "Requested ID:",
+    id
+);
+```

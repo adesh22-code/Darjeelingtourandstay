@@ -53,7 +53,7 @@ async function loadHomestay() {
 
        // Cache config - use same key in both files
 const CACHE_KEY = "homestay_cache_v2"; 
-const CACHE_TIME_KEY = "homestay_cache_time_v2";
+const CACHE_TIME_KEY = "homestay_cache_time";
 const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
 
 let homes = null;
